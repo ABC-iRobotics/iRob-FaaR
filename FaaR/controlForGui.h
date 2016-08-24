@@ -20,7 +20,7 @@
 
 #include <fstream>
 
-#include "maketrajectory.h"
+#include "falcon/trajectoryGeneration/maketrajectory.h"
 
 using namespace libnifalcon;
 using namespace std;

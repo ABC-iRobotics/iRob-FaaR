@@ -846,7 +846,3 @@ void MainWindow::on_replayMode_clicked()
     }
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-
-}

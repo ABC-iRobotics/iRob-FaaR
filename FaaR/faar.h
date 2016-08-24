@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <falconthreads.h>
-#include <optothread.h>
+#include <falcon/threads/falconthreads.h>
+#include <falcon/threads/optothread.h>
 #include "qcustomplot.h"
 #include <QTimer>
 #include <QListWidget>
@@ -133,7 +133,6 @@ private slots:
 
     void on_replayMode_clicked();
 
-    void on_pushButton_clicked();
 
 private:
 
