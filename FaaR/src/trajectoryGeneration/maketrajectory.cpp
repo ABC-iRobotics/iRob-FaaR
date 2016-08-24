@@ -1,4 +1,4 @@
-#include "maketrajectory.h"
+#include "falcon/trajectoryGeneration/maketrajectory.h"
 
 MakeTrajectory::MakeTrajectory()
 {

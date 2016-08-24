@@ -26,7 +26,7 @@ SOURCES += main.cpp\
     controlForGui.cpp \
     src/threads/optothread.cpp \
     qcustomplot.cpp \
-    maketrajectory.cpp \
+    src/trajectoryGeneration/maketrajectory.cpp \
     faar.cpp
 
 
@@ -104,7 +104,7 @@ HEADERS  +=\
     controlForGui.h \
     falcon/threads/optothread.h \
     qcustomplot.h \
-    maketrajectory.h \
+    src/trajectoryGeneration/maketrajectory.h \
     faar.h
 
 FORMS    += mainwindow.ui
