@@ -1,4 +1,4 @@
-#include "optothread.h"
+#include "falcon/threads/optothread.h"
 
 
 OptoThread::OptoThread(QObject *parent):QThread(parent)

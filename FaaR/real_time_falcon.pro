@@ -22,9 +22,9 @@ SOURCES += main.cpp\
     src/OMD/optosource.cpp \
     src/util/FalconCLIBase.cpp \
     src/util/FalconDeviceBoostThread.cpp \
-    falconthreads.cpp \
+    src/threads/falconthreads.cpp \
     controlForGui.cpp \
-    optothread.cpp \
+    src/threads/optothread.cpp \
     qcustomplot.cpp \
     maketrajectory.cpp \
     faar.cpp
@@ -100,9 +100,9 @@ HEADERS  +=\
     falcon/util/FalconDeviceBoostThread.h \
     falcon/util/FalconFirmwareBinaryNvent.h \
     falcon/util/FalconFirmwareBinaryTest.h \
-    falconthreads.h \
+    falcon/threads/falconthreads.h \
     controlForGui.h \
-    optothread.h \
+    falcon/threads/optothread.h \
     qcustomplot.h \
     maketrajectory.h \
     faar.h
