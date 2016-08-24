@@ -14,14 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     src/comm/FalconCommLibUSB.cpp \
-    src/Control/control.cpp \
     src/core/FalconDevice.cpp \
     src/core/FalconFirmware.cpp \
     src/firmware/FalconFirmwareNovintSDK.cpp \
     src/kinematic/FalconKinematicStamper.cpp \
     src/OMD/rungekutta.cpp \
     src/OMD/optosource.cpp \
-    src/PID/pid.cpp \
     src/util/FalconCLIBase.cpp \
     src/util/FalconDeviceBoostThread.cpp \
     falconthreads.cpp \
@@ -35,7 +33,6 @@ SOURCES += main.cpp\
 HEADERS  +=\
             falcon/comm/FalconCommFTD2XX.h \
     falcon/kinematic/FalconKinematicStamper.h \
-    falcon/Control/control.h \
     falcon/core/FalconComm.h \
     falcon/core/FalconCore.h \
     falcon/core/FalconDevice.h \
@@ -99,7 +96,6 @@ HEADERS  +=\
     falcon/kinematic/stamper/StamperUtils.h \
     falcon/OMD/optosource.h \
     falcon/OMD/rungekutta.h \
-    falcon/PID/pid.h \
     falcon/util/FalconCLIBase.h \
     falcon/util/FalconDeviceBoostThread.h \
     falcon/util/FalconFirmwareBinaryNvent.h \
