@@ -34,7 +34,7 @@ void controlLoop(void *arg)
 {
     rt_var.falconStop = false;
     std::cout << "ControlLoop running." << std::endl;
-    reinterpret_cast<controlForGui *>(arg)->setLedGreen();
+    reinterpret_cast<controlForGui *>(arg)->setLedGreen();  /// reinterpreting the control object
 
 
     RTIME now, previos; //Define now and previous time
@@ -79,7 +79,7 @@ void controlLoop(void *arg)
         }
         if(prevModeWasLog==true && ctrl->currentState!=ctrl->logPathMode)
         {
-        // ha az előző mód loggolás volt, fáljt zárjuk be
+        /// If previous mode was logging -> close the file
         std::cout<<"[Logging off] number of entries: " << loopCountofLog<< std::endl;
         loopCountofLog=1;
         myLogFile.close();
@@ -111,6 +111,8 @@ void controlLoop(void *arg)
 
 void FalconThreads::OpenLog(std::string openedFileName)
 {
+    /// This function opens a log file (which's name was passed by QFiledialog)
+    /// and loads it's content to a vector , then pass it to the control object
     ifstream logfile;
     logfile.open(openedFileName.c_str());
     if(logfile.is_open())
@@ -119,7 +121,7 @@ void FalconThreads::OpenLog(std::string openedFileName)
         mControl.logTh1.clear();
         mControl.logTh2.clear();
 
-        std::cout<< "[Open Log] Pályát tartalmazó file megnyitva!" << std::endl;
+        std::cout<< "[Open Log] Path file opened" << std::endl;
         mControl.replayCount = 0;
         while(!logfile.eof())
         {
@@ -131,7 +133,7 @@ void FalconThreads::OpenLog(std::string openedFileName)
             mControl.replayCount++;
         }
     }
-            std::cout<< "[Open Log] Pálya pontjai betárazva" << mControl.replayCount <<std::endl;
+            std::cout<< "[Open Log] Path points stored" << mControl.replayCount <<std::endl;
     logfile.close();
 }
 
@@ -149,13 +151,7 @@ void FalconThreads::InitThreads()
     //Avoids memory swapping for this program
     mlockall(MCL_CURRENT|MCL_FUTURE);
     firstTimeRun = true;
-    ///Trajectory planning
-    //gmtl::Vec3d p0(0, 0, 110);
-    //gmtl::Vec3d p1(-20, 30, 130);
 
-    //gmtl::Vec3d v(0.62, 0.21, 0.41);
-   // mControl.trajectory.trajectory(p0, p1, nn);
-    //mControl.trajectoryPath();
 
 }
 
@@ -198,9 +194,6 @@ void FalconThreads::startFalcon()
 void FalconThreads::stopFalcon()
 {
     //Stop periodic task - Arguments: &task
-   // mControl.closeComm();
-    //rt_task_suspend(&controlTask);
     rt_var.falconStop=true;
     firstTimeRun = false;
-    //std::cout <<"Falcon stopped.\n";
 }
