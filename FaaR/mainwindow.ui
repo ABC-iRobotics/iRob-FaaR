@@ -56,11 +56,11 @@ QSlider::handle:horizontal {
 }
 
 QMainWindow {
-	background-color:rgb(184, 255, 139)
+	background-color:rgb(255, 255, 255)
 }
 
 QTabWidget {
-	background-color: rgb(255, 255, 208);
+	background-color: rgb(255, 255, 255);
 }
 
 
@@ -740,12 +740,18 @@ QDoubleSpinBox {
        </layout>
       </widget>
       <widget class="QWidget" name="tab_2">
+       <property name="styleSheet">
+        <string notr="true">background rgb(255, 255, 255)</string>
+       </property>
        <attribute name="title">
         <string>RT plot</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_6">
         <item row="0" column="0">
          <widget class="QScrollArea" name="scrollArea">
+          <property name="styleSheet">
+           <string notr="true">background rgb(255, 255, 255)</string>
+          </property>
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
@@ -757,6 +763,9 @@ QDoubleSpinBox {
              <width>801</width>
              <height>541</height>
             </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background rgb(255, 255, 255)</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_4">
             <item row="0" column="0" colspan="3">
