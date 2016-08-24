@@ -2,6 +2,7 @@
 
 RungeKutta::RungeKutta()
 {
+
     pos = 0;
     v = 0;
     h = 0.0001;
@@ -32,7 +33,7 @@ RungeKutta::RungeKutta(double &pm, double &pK, double &pC, double &ph)
 RungeKutta::~RungeKutta()
 {
 }
-
+ /// Modifier functions
 void RungeKutta::setPos(double newpos)
 {
     pos = newpos;
@@ -67,7 +68,7 @@ void RungeKutta::setStep(double newStep)
  h=newStep;
 }
 
-
+  /// Iteration step
 void RungeKutta::Iteracio(double Force[3],int index)
 {
 
@@ -76,6 +77,8 @@ void RungeKutta::Iteracio(double Force[3],int index)
     double dv = h * ((F - C*v - K*pos)/m);
     double dpos = h * v;
 /*
+        /// This section is not working as intended, so it's been replaced by an even simpler method
+
     double dpos1 = h*v;
     double dv1 = (F/m) - (C / m)*v - (K / m)*pos;
 
@@ -97,6 +100,8 @@ void RungeKutta::Iteracio(double Force[3],int index)
 
 }
 
+
+    /// Accessor functions here
 double RungeKutta::getPos()
 {
     return pos;

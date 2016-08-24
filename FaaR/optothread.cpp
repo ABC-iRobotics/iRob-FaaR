@@ -45,11 +45,10 @@ double returnZpos()
 void OptoThread::run()
 {
 
-
     emit sensorInitialized();
-    Config_default(optoDaq,optoPorts,0);            // Optoforce sensor paramétereit beállítjuk (Freq, Filter)
-    Offsex(optoDaq,Offsetx,Offsety,Offsetz);        // Mintavétel-> átlagolás -> globalis offset értéket átállítjuk nulláról
-    Offset[0]=Offsetx;                              // Sima értékadás tömbnek
+    Config_default(optoDaq,optoPorts,0);            // Set sensor parameters
+    OffsetAll(optoDaq,Offsetx,Offsety,Offsetz);     // Calculate offset values from 5 samples
+    Offset[0]=Offsetx;                              // Array initialisation
     Offset[1]=Offsety;
     Offset[2]=Offsetz;
     Xkord.setPos(0);
@@ -61,9 +60,12 @@ void OptoThread::run()
     while(1)
     {
 
-        double elapsedTime= double(time.nsecsElapsed())/1000000000;
-     //   std::cout<<"Eltelt idő: "<< elapsedTime << " Seconds"<<std::endl;
-        time.restart();
+        double elapsedTime= double(time.nsecsElapsed())/1000000000;          // time measure and convert from ns to s
+        time.restart();                                                      // restart timer
+
+
+    /// Update parameters from gui data
+
 Xkord.setMass(pm);
 Xkord.setStep(elapsedTime);
 Xkord.setC(pC);
@@ -79,27 +81,32 @@ Zkord.setStep(elapsedTime);
 Zkord.setC(pC);
 Zkord.setK(pK);
 
-
+ /// read force from sensor
 ReadForce(optoDaq,Offset,&Fx,&Fy,&Fz);
 
 
 double Force[3] = {Fx,Fy,Fz};
+
+ /// iteration step
 QMutex iteracio;
 iteracio.lock();
 Xkord.Iteracio(Force,0); Ykord.Iteracio(Force,1); Zkord.Iteracio(Force,2);
 iteracio.unlock();
 
-//std::cout << Xkord.getPos() << " // " << Ykord.getPos() << " // " << Zkord.getPos() << std::endl;
-double x = 1; //skála
+
+double x = 1; //scaling
 emit xkord(x*Xkord.getPos());
 emit ykord(x*Ykord.getPos());
 emit zkord(x*Zkord.getPos());
-//std::cout<<Xkord.getTime()<<std::endl;
-usleep(500);
+
+
+usleep(500);  /// some sleep
 QMutex muci;
 muci.lock();
 if(this->Stop)
 {
+    /// if sensor is stopped, reinitialize position
+    /// and velocity in iteration modell
 Xkord.setV(1);
 Ykord.setV(1);
 Zkord.setV(1);

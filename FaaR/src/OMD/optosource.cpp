@@ -129,7 +129,8 @@ void Config_default(OptoDAQ & p_optodaq, OptoPorts & p_optoPorts, int iPortindex
     }
 }
 
-
+    /// take 5 samples, discard first one ( it's usually bullshit )
+    /// calculate average -> output offset values
 void Offseteles(OptoDAQ & poptodaq, double &Offx, double &Offy, double &Offz)
 {
     OptoPackage pack;
@@ -167,7 +168,7 @@ void Offseteles(OptoDAQ & poptodaq, double &Offx, double &Offy, double &Offz)
     std::cout << " Az offsetek beállítva, szimuláció indul! " << std::endl;
 }
 
-
+    /// Function to read force, and subtract offset values and convert mN to N
 void ReadForce(OptoDAQ & p_optodaq, double offsetek[], double* Fx, double* Fy, double* Fz)
 {
     OptoPackage pack;
@@ -187,8 +188,8 @@ void ReadForce(OptoDAQ & p_optodaq, double offsetek[], double* Fx, double* Fy, d
     }
 }
 
-
-void Offsex(OptoDAQ & optoDaq,double & Offsetx,double & Offsety,double & Offsetz)
+    /// Not sure why we have this here
+void OffsetAll(OptoDAQ & optoDaq,double & Offsetx,double & Offsety,double & Offsetz)
 {
     Offseteles(optoDaq, Offsetx, Offsety, Offsetz);
 }
