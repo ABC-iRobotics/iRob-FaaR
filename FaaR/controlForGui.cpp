@@ -9,9 +9,9 @@ controlForGui::controlForGui()
 controlForGui::controlForGui(FalconDevice& device, double& pX, double& pY, double& pZ ,
                              double& pKp , double& pKd,bool &plowPassIsOn)
 {
-    /// Függvény konstruktor, átadja az iterációból számított koordinátákat, illetve a vezérléshez a falcon objectet
-    /// init() inicializálja a kapcsolatot, és a szükséges kezdő értékeket beállítja
-
+    /// constructor, passes arguments by reference from the main thread and the falcon object which was created in the
+    /// real-time thread
+    /// init() initialises the connection, and sets the proper starting values for the variables
 
     mPosX =&pX;
     mPosY =&pY;
@@ -25,11 +25,10 @@ controlForGui::controlForGui(FalconDevice& device, double& pX, double& pY, doubl
 
     currentState =goHomeMode;
          l = 0;
-
 }
 
-///Control rész
-    /// Kommunikáció + olvasás + impedance
+///Control part
+    /// Communication + Reading + Impedance
 void controlForGui::trajectoryPath()
 {   std::cout << "running" << std::endl;
     int loopcount = 0;
@@ -65,36 +64,42 @@ void controlForGui::genTrajectoryPath()
 
 }
 
-///Trajektória generálás pontok beolvasásával
-void controlForGui::generateTrajectory()
+/// Trajectory generation from points
+void controlForGui::generateTrajectory()  // Something is wrong here -gotta look into it later
 {
-    gmtl::Vec3d encoderAng;         // encoder szögeket tároljuk benne
-    read_encoder(encoderAng);       /// Beadjuk neki az encoderAng vektort, belemásolja a jelenlegi encoder szögeket
-    FK(encoderAng);
+    gmtl::Vec3d encoderAng;         /// store encoder values
+    read_encoder(encoderAng);       /// copies the current values to the encoderAng variable
+    FK(encoderAng);                 /// Forward kinematics
     std::cout << pos << std::endl;
 }
-void controlForGui::pakoldAt(std::vector<double> ang1, std::vector<double> ang2, std::vector<double> ang3)
+
+
+void controlForGui::getNextPoint(std::vector<double> ang1, std::vector<double> ang2, std::vector<double> ang3)
 {
-    /// minden lefutási ciklusban ugrik egyet a loopcount,
-    /// és a következő célkoordinátát bemásolja a szükséges helyre
-    /// a tömbből, amiben a pálya pontjait tároljuk
+
+    /// In every cicle loopcount increases, and copies the proper
+    /// reference values to the "wayToGo" variable from the array
+    /// in which we store the full path
 
     wayToGo[0] = ang1[loopCount];
     wayToGo[1] = ang2[loopCount];
     wayToGo[2] = ang3[loopCount];
 
-    /*wayToGoEnd[0] = trajTh1[trajectory.count-1];
-    wayToGoEnd[1] = trajTh2[trajectory.count-1];
-    wayToGoEnd[2] = trajTh3[trajectory.count-1];*/
     loopCount++;
 }
 
-    ///PID-es cuccok
+    ///PD Control stuff
+
 void controlForGui::FalconLoop()
 {
-    gmtl::Vec3d encoderAng;  // encoder szögeket tároljuk benne
-    gmtl::Vec3d refAng;      //  elérni kívánt (theta1) szögeket tároljuk benne
-    Angle refPosAng;         //  IK -ebbe menti ki az összes számolt szöget
+
+    /// This is the main control loop, operating mode is changed
+    /// using switch
+
+    /// some variables used later on the loop, must be updated in each loop
+    gmtl::Vec3d encoderAng;  //  to store encoder values
+    gmtl::Vec3d refAng;      //  to store the setpoint encoder values
+    Angle refPosAng;         //  to store IK() function output
     gmtl::Vec3d desiredOutput, posWithImpedance;
 
     switch (currentState)
@@ -102,15 +107,18 @@ void controlForGui::FalconLoop()
     case goHomeMode:
     {
 
-        runIOLoop();                    //  Kommunikáció megtörténik
-        read_encoder(encoderAng);       /// Beadjuk neki az encoderAng vektort, belemásolja a jelenlegi encoder szögeket
-        IK(refPosAng,thisIsHome,refAng);       /// A pozícióhoz tartozó szögeket meghatározzuk ->  refAng-ba kimásolja a megfelelő thetákat
-        interPol(encoderAng,refAng);    /// Első hívásra felosztja a pályát, utána mindig növeli a wayToGo értéket egységnyivel
-        PID(wayToGo,encoderAng);        //  PID controllert megkérjük szabályozzon a kívánt szögre, refAng -> cél , encoderAng -> jelenlegi pozíció
-        setLedGreen();                  //  LED zöldre áll, jelezve hogy fut a program
-        FK(encoderAng);
-        //std::cout<<encoderAng<<std::endl;
-        //std::cout<< "[goHomeMode] ide mennék : " << wayToGo << std::endl;
+        runIOLoop();                        ///  Exchange data with the falcon
+        read_encoder(encoderAng);           ///  Copy encoder values to "encoderAng"
+        IK(refPosAng,thisIsHome,refAng);    ///  Calculate the angles for the setpoint position and copy the proper values to "refAng"
+        interPol(encoderAng,refAng);        ///  Simple linear path iteration, first call-> calculates path, and push proper values to "wayToGo"
+        PID(wayToGo,encoderAng);            ///  PID controller refAng -> setpoint value, encoderAng -> current value
+        setLedGreen();                      ///  Set the LED on the falcon green
+        FK(encoderAng);                     ///  Forward kinematics
+
+
+            // the Falcon should reach the home position as the loopCount
+            // reaches 1000, switch mode to stay at the home position and
+            // resets loopCount
         if (loopCount == 1000)
         {
             isAtHome=true;
@@ -127,103 +135,120 @@ void controlForGui::FalconLoop()
     }
     case stayMode:
     {
-        setPid(*mKp,*mKd);  /// PD értékeit átveszi GUI-ból -> átállítja
-        runIOLoop();                    //  Kommunikáció megtörténik
-        read_encoder(encoderAng);       /// Beadjuk neki az encoderAng vektort, belemásolja a jelenlegi encoder szögeket
-        addImpedance(endPos,posWithImpedance);              //  Impedanciát hozzáadjuk a kívánt pozícióhoz -> új érték pos-ban tárolva
-        IK(refPosAng,posWithImpedance,refAng);              /// Az impedanciával hozzáadott pozícióhoz tartozó szögeket meghatározzuk
-        PID(refAng,encoderAng);         /// PID controllert megkérjük szabályozzon a kívánt szögre, refAng -> cél , encoderAng -> jelenlegi pozíció
-        setLedGreen();                  ///  LED zöldre áll, jelezve hogy fut a program
-        FK(encoderAng);
-        //std::cout<<encoderAng<<std::endl;
-        //std::cout<< "[stayMode] ide mennék : " << refAng << std::endl;
+        // In this mode, the falcon stays at the last position that was set
+
+        setPid(*mKp,*mKd);              /// set PID values (Kd & Kp from GUI)
+        runIOLoop();                    ///  Exchange data with the falcon
+        read_encoder(encoderAng);       ///  Copy encoder values to "encoderAng"
+        addImpedance(endPos,posWithImpedance);   /// Add Positions from impedance model ,the the new setpoint position is stored in the second argument
+        IK(refPosAng,posWithImpedance,refAng);   /// Calculate the angles from the position of the updated "pos" value
+        PID(refAng,encoderAng);         ///  PID controller refAng -> setpoint value, encoderAng -> current value
+        setLedGreen();                  ///  Set the LED on the falcon green
+        FK(encoderAng);                 ///  Forward kinematics
         break;
     }
     case followPathMode:
     {
-        setPid(*mKp,*mKd);              /// PD értékeit átveszi GUI-ból -> átállítja
-        runIOLoop();                    //  Kommunikáció megtörténik
-        read_encoder(encoderAng);       /// Beadjuk neki az encoderAng vektort, belemásolja a jelenlegi encoder szögeke
-        pakoldAt(trajTh1, trajTh2, trajTh3);
-        FK(wayToGo,desiredOutput);
-        addImpedance(desiredOutput,posWithImpedance);
-        IK(refPosAng,posWithImpedance,wayToGo);
-        PID(wayToGo,encoderAng);        //  PID controllert megkérjük szabályozzon a kívánt szögre, refAng -> cél , encoderAng -> jelenlegi pozíció
-        setLedGreen();                  //  LED zöldre áll, jelezve hogy fut a program
-        FK(encoderAng);
+
+        // In this mode the end-effector follows a
+        // previously defined path in maketrajectory.cpp ( circle right now )
+
+        setPid(*mKp,*mKd);              /// set PID values (Kd & Kp from GUI)
+        runIOLoop();                    ///  Exchange data with the falcon
+        read_encoder(encoderAng);       ///  Copy encoder values to "encoderAng"
+        getNextPoint(trajTh1, trajTh2, trajTh3); /// acces the next setpoint from the array that stores the path
+        FK(wayToGo,desiredOutput);      /// Forward kinematics , it's output is "desiredOutput"
+        addImpedance(desiredOutput,posWithImpedance); /// Add Positions from impedance model ,the the new setpoint position is stored in the second argument
+        IK(refPosAng,posWithImpedance,wayToGo);       /// Calculate the angles from the position of the updated setPoint value (here: posWithImpedance)
+        PID(wayToGo,encoderAng);        ///  PID controller refAng -> setpoint value, encoderAng -> current value
+        setLedGreen();                  ///  Set the LED on the falcon green
+        FK(encoderAng);                 /// Forward kinematics , it's output is the global "pos"
+
+        // ?? //
         posx.push_back(returnpos()[0]);
         posy.push_back(returnpos()[1]);
         posz.push_back(returnpos()[2]);
-        //std::cout<<encoderAng<<std::endl;
-        //std::cout<< "[followPathMode] ide mennék : " << wayToGo << std::endl;
+
+
+            // at the end of path switch back to homing mode
         if (loopCount == trajectory.count)
         {
             endPos = homeAng;
             isAtHome=true;
-            std::cout<< "Odaértem! " << std::endl;
+            std::cout<< "Arrived!" << std::endl;
             loopCount = 0;
-            currentState=goHomeMode;  /// state swtich -> elmászik home pozicióba ha végzett a feladatával
+            currentState=goHomeMode;  /// state swtich -> go to home position
             firstRun=true;
         }
         break;
     }
     case genTrajMode:
     {
-        setPid(*mKp,*mKd);              /// PD értékeit átveszi GUI-ból -> átállítja
-        runIOLoop();                    //  Kommunikáció megtörténik
-        read_encoder(encoderAng);       /// Beadjuk neki az encoderAng vektort, belemásolja a jelenlegi encoder szögeke
-        pakoldAt(genTrajTh1, genTrajTh2, genTrajTh3);
-        FK(wayToGo,desiredOutput);
-        addImpedance(desiredOutput,posWithImpedance);
-        IK(refPosAng,posWithImpedance,wayToGo);
-        PID(wayToGo,encoderAng);        //  PID controllert megkérjük szabályozzon a kívánt szögre, refAng -> cél , encoderAng -> jelenlegi pozíció
-        setLedGreen();                  //  LED zöldre áll, jelezve hogy fut a program
-        FK(encoderAng);
+
+        // In this mode the end-effector follows a
+        // previously generated path
+
+        setPid(*mKp,*mKd);              /// set PID values (Kd & Kp from GUI)
+        runIOLoop();                    ///  Exchange data with the falcon
+        read_encoder(encoderAng);       ///  Copy encoder values to "encoderAng"
+        getNextPoint(genTrajTh1, genTrajTh2, genTrajTh3); /// acces the next setpoint from the array that stores the path
+        FK(wayToGo,desiredOutput);       /// Forward kinematics , it's output is "desiredOutput"
+        addImpedance(desiredOutput,posWithImpedance); /// Add Positions from impedance model ,the the new setpoint position is stored in the second argument
+        IK(refPosAng,posWithImpedance,wayToGo);       /// Calculate the angles from the position of the updated setPoint value (here: posWithImpedance)
+        PID(wayToGo,encoderAng);        ///  PID controller refAng -> setpoint value, encoderAng -> current value
+        setLedGreen();                  ///  Set the LED on the falcon green
+        FK(encoderAng);                 /// Forward kinematics , it's output is the global "pos"
+
+        //?//
         posx.push_back(returnpos()[0]);
         posy.push_back(returnpos()[1]);
         posz.push_back(returnpos()[2]);
-        //std::cout<<encoderAng<<std::endl;
-        //std::cout<< "[followPathMode] ide mennék : " << wayToGo << std::endl;
+
+            // at the end of path switch back to homing mode
         if (loopCount == trajectory.genCount)
         {
             endPos = homeAng;
             isAtHome=true;
             std::cout<< "Odaértem! " << std::endl;
             loopCount = 0;
-            currentState=goHomeMode;  /// state swtich -> elmászik home pozicióba ha végzett a feladatával
+            currentState=goHomeMode;  /// state swtich -> go to home position
             firstRun=true;
         }
         break;
     }
     case logPathMode:
     {
-
-        runIOLoop();  /// kommunikáció
-        read_encoder(encoderAng); /// szögek kiolvasása
+        // only communication occours , so the falcon does not crash
+        // only for logging data, no forces transmitted
+        runIOLoop();              ///  Exchange data with the falcon
+        read_encoder(encoderAng); ///  Copy encoder values to "encoderAng"
         break;
     }
 
     case replayMode:
     {
-        setPid(*mKp,*mKd);              /// PD értékeit átveszi GUI-ból -> átállítja
-        runIOLoop();                    //  Kommunikáció megtörténik
-        read_encoder(encoderAng);       /// Beadjuk neki az encoderAng vektort, belemásolja a jelenlegi encoder szögeke
-        pakoldAt(logTh0, logTh1, logTh2);
-        FK(wayToGo,desiredOutput);
-        addImpedance(desiredOutput,posWithImpedance);
-        IK(refPosAng,posWithImpedance,wayToGo);
-        PID(wayToGo,encoderAng);        //  PID controllert megkérjük szabályozzon a kívánt szögre, refAng -> cél , encoderAng -> jelenlegi pozíció
-        setLedGreen();                  //  LED zöldre áll, jelezve hogy fut a program
+        // In this mode the end-effector follows a
+        // previously logged path
+
+        setPid(*mKp,*mKd);              /// set PID values (Kd & Kp from GUI)
+        runIOLoop();                    ///  Exchange data with the falcon
+        read_encoder(encoderAng);       ///  Copy encoder values to "encoderAng"
+        getNextPoint(logTh0, logTh1, logTh2); /// acces the next setpoint from the array that stores the path
+        FK(wayToGo,desiredOutput);       /// Forward kinematics , it's output is "desiredOutput"
+        addImpedance(desiredOutput,posWithImpedance); /// Add Positions from impedance model ,the the new setpoint position is stored in the second argument
+        IK(refPosAng,posWithImpedance,wayToGo);       /// Calculate the angles from the position of the updated setPoint value (here: posWithImpedance)
+        PID(wayToGo,encoderAng);        ///  PID controller refAng -> setpoint value, encoderAng -> current value
+        setLedGreen();                  ///  Set the LED on the falcon green
         FK(encoderAng);
 
-        //std::cout<<"[replay Mode]"<<encoderAng<<std::endl;
+
         if (loopCount == replayCount)
         {
             endPos = pos;
             isAtHome=true;
-            std::cout<< "[replay] Pálya vége  " << std::endl;
+            std::cout<< "[replay] End of path  " << std::endl;
             loopCount = 0;
-            currentState=goHomeMode;  /// state swtich -> elmászik home pozicióba ha végzett a feladatával
+            currentState=goHomeMode;  /// state swtich -> go to home position
             firstRun=true;
         }
         break;
@@ -231,44 +256,45 @@ void controlForGui::FalconLoop()
 
     }
 
-    encoderAngles=encoderAng;
-    desAng=refAng;
+    encoderAngles=encoderAng;  //copy to global
+    desAng=refAng;             //copy to global
 }
 void controlForGui::PID(gmtl::Vec3d desired,gmtl::Vec3d encoderAngle)
 {
-    /// Saját PID implementáció ( I tag nélkül )
-gmtl::Vec3d hibavektor;
-hibavektor = desired-encoderAngle;
-Kpf = hibavektor*Kp;   // P - tag vektora   -> Hiba * Kp
-// D-tag
-gmtl::Vec3d posvaltozas = hibavektor - elozo_hibavektor;
-leptetes(posvaltozas);
+   /// PID implementation  ( without "I" )
+
+   // P member //
+gmtl::Vec3d errorVect;
+prevErrorVect = desired-encoderAngle;
+mPVect = errorVect*Kp;
+    // D member //
+gmtl::Vec3d posChange = errorVect - prevErrorVect;
+lowPassStep(posChange);
 if (*lowPassIsOn == true)
 {
-    Kdf = posvaltozas* Kd / dt;
+    mDVect = posChange* Kd / dt;
 }
 if (*lowPassIsOn == false)
 {
-    Kdf = Kdfilter* Kd /dt;
+    mDVect = Kdfilter* Kd /dt;
 }
 
-// Tagokat összeadjuk
-output = Kpf + Kdf;
-elozo_hibavektor = hibavektor;
+output = mDVect+mPVect;     /// sum members
+prevErrorVect = errorVect;  /// remember previous error
 
-sendTorque();                   /// PID a globális torque változónak átadja a kívánt erőket, lehatároljuk őket, majd kiírjuk
+sendTorque();     /// Convert output signal to torque, and write to falcon
 
 }
 void controlForGui::setPid(double nKp,double nKd)
 {
-    /// Paraméterekhez való hozzáférést teszi lehetővé futás közben ez a függvény
+    /// Changes the control values for the PID
     Kp  = nKp;
     Kd  = nKd;
 
 }
-void controlForGui::Nyomatekhatarolas()
+void controlForGui::limitTorque()
 {
-    /// Max nyomatékot megállípítjuk, ha bármelyik csukló e-fölé mennek levágjuk, többit hozzá illesztjük
+    /// Limiting the max torque, and scaling down the others if neccessary
     double maxTorque=5.0;	//Rather random choice here, could be higher
     double largestTorqueValue=0.0;
     int largestTorqueAxis=-1;
@@ -287,13 +313,12 @@ void controlForGui::Nyomatekhatarolas()
         double scale = largestTorqueValue/maxTorque;
         torque /= scale;
     }
-    //printvect(torque);
 }
 void controlForGui::sendTorque()
 {
-    /// Nyomatékot kiírjuk a falconnak
+    /// scales the output to torque and send it to the Falcon
     torque = output;
-    Nyomatekhatarolas();
+    limitTorque();
     torque *= 10000.0;
     boost::array<int, 3> enc_vec;
     enc_vec[0] = -torque[0];
@@ -301,29 +326,19 @@ void controlForGui::sendTorque()
     enc_vec[2] = -torque[2];
     f->setForces(enc_vec);
 }
-void controlForGui::sendZeroTorque()
-{
-/// Amíg pihentetjük a falcont -> 0 torque a csuklókra
-        *mKp = 0; *mKd = 0;
-        boost::array<int, 3> enc_vec;
-        enc_vec[0] = -torque[0];
-        enc_vec[1] = -torque[1];
-        enc_vec[2] = -torque[2];
-        f->setForces(enc_vec);
-
-}
 
 /// Trajektória tervezés
 
 void controlForGui::interPol(gmtl::Vec3d encoderAng, gmtl::Vec3d& goalAngle)
 {
-    if (firstRun==true)
+    if (firstRun==true)  // on first run slice path to 1000 equal part, and generate a vector
     {
     startEncoder = encoderAng;
-    hibavektorHome = goalAngle-encoderAng;
-    lamda = hibavektorHome / 1000.0;
+    errorVectHome = goalAngle-encoderAng;
+    lamda = errorVectHome / 1000.0;
     firstRun=false;
     }
+                        // sets the setpoint vector to the proper value
     firstRun=false;
     wayToGo = startEncoder + (lamda * loopCount);
     loopCount++;
@@ -331,14 +346,17 @@ void controlForGui::interPol(gmtl::Vec3d encoderAng, gmtl::Vec3d& goalAngle)
  }
 void controlForGui::resetFirstRun()
 {
+
+    /// reseting some variables here
     firstRun = true;
     loopCount = 0;
     isAtHome = false;
 
 }
 /// Low-pass filter
-void controlForGui::sumtomb()
+void controlForGui::avgOfArray()
 {
+    /// Calculates the average of the the array
     for (int j = 0; j<3 ; j++)
     {
         SummKd[j] = 0;
@@ -352,11 +370,10 @@ void controlForGui::sumtomb()
     }
   //  std::cout << " ---------------------" << std::endl;
 }
-void controlForGui::leptetes(gmtl::Vec3d KD)
-{ /// Adott egy n elemű tömb, n. elemet felülírjuk az n-1. elemmel, a 0. elem helyére pedig új értéket írunk be
-
-
- for (int j = 0 ; j<3 ; j++)
+void controlForGui::lowPassStep(gmtl::Vec3d KD)
+{
+    /// deletes last element in an array, pushes the others back by 1 place, read new value to the 0. cell
+     for (int j = 0 ; j<3 ; j++)
    {
     for (int i = 9; i > 0 ; i--)
     {
@@ -365,30 +382,29 @@ void controlForGui::leptetes(gmtl::Vec3d KD)
     }
     arr[j][0]=KD[j];
    }
- sumtomb();
+ avgOfArray();
 
 }
-/// Értékvisszaadás logoláshoz
+/// Retrun functions for logging data
 gmtl::Vec3d controlForGui::returnDesiredAng()
 {
     return desAng;
 }
 gmtl::Vec3d controlForGui::returnEncoderAngles()
 {
-    ///Visszaadja az encoder szögeket
     return encoderAngles;
 }
 gmtl::Vec3d controlForGui::returnKp()
 {
-    return Kpf;
+    return mPVect;
 }
 gmtl::Vec3d controlForGui::returnKd()
 {
-    return Kdf;
+    return mDVect;
 }
 gmtl::Vec3d controlForGui::returnoutput()
 {
-    return Kpf + Kdf;
+    return mPVect+mDVect;
 }
 gmtl::Vec3d controlForGui::returnpos()
 {
@@ -465,13 +481,12 @@ void controlForGui::IK(Angle& angles,const gmtl::Vec3d& worldPosition, gmtl::Vec
     angles.theta2[1] = acos( (-P2[0] + libnifalcon::a*cos(angles.theta1[1]) - libnifalcon::c)/(-libnifalcon::d - libnifalcon::e - libnifalcon::b*sin(angles.theta3[1]) )  );
     angles.theta2[2] = acos( (-P3[0] + libnifalcon::a*cos(angles.theta1[2]) - libnifalcon::c)/(-libnifalcon::d - libnifalcon::e - libnifalcon::b*sin(angles.theta3[2]) )  );
 
-    setDesAng(angles,importantAng); // a fontos szögeket kimentjük -> kiadjuk
-
+    setDesAng(angles,importantAng); // save important angles from "angles" and return them to "importantAng"
 
 }
 void controlForGui::FK(const gmtl::Vec3d& theta0)
 {
-
+  /// Forward kinematics -> output is the global "pos" variable
     Angle angles;
     gmtl::Vec3d previousPos(pos);
     gmtl::Vec3d currentPos(pos);
@@ -549,8 +564,7 @@ void controlForGui::FK(const gmtl::Vec3d& theta0)
 }
 void controlForGui::FK(const gmtl::Vec3d& theta0,gmtl::Vec3d& posOut)
 {
-
-
+    /// Overloaded Forward kinematics function, output is "posOut" arg
     Angle angles;
     gmtl::Vec3d previousPos(pos);
     gmtl::Vec3d currentPos(pos);
@@ -701,7 +715,7 @@ void controlForGui::init()
         if(!dev.isFirmwareLoaded())
         {
             std::cout << "Loading firmware" << std::endl;
-            for(int i = 0; i < 10; ++i)
+            for(int i = 0; i < 100; ++i)
             {
                 if(!dev.getFalconFirmware()->loadFirmware(true, NOVINT_FALCON_NVENT_FIRMWARE_SIZE, const_cast<uint8_t*>(NOVINT_FALCON_NVENT_FIRMWARE)))
                 {
@@ -724,15 +738,14 @@ void controlForGui::init()
 
 
 
-set_vectorzero(Kpf);
-set_vectorzero(Kdf);
-set_vectorzero(Kdfprev);
+set_vectorzero(mPVect);
+set_vectorzero(mDVect);
 set_vectorzero(encoderAngles);
 set_vectorzero(desAng);
-set_vectorzero(hibavektor);
+set_vectorzero(errorVect);
+set_vectorzero(prevErrorVect);
 set_vectorzero(output);
 set_vectorzero(torque);
-set_vectorzero(elozo_hibavektor);
 set_vectorzero(SummKd);
 set_vectorzero(AVG);
 dt = 0.001;
@@ -766,7 +779,8 @@ pos[2] = 0.11;
 
 }
 void controlForGui::set_vectorzero(gmtl::Vec3d vect)
-{/// egyszerű makró, inicializáláshoz, gmtl::Vec3d vektort kinulláz
+{
+    /// simple macro to set vectors to zero
     vect[0]=0;
     vect[1]=0;
     vect[2]=0;
@@ -775,60 +789,52 @@ void controlForGui::set_vectorzero(gmtl::Vec3d vect)
 // Makrók
 void controlForGui::setDesAng(Angle angles,gmtl::Vec3d& desiredAng)
 {
-    /// kimentjük egy vektorba a kívánt pozícióból számolt szögeket
-    /// angle (IK függvényből visszakapott struct, ami tartalmazza
-    /// az összes szögét az összes karnak , nekünk a theta1 -ek
-    /// kellenek
+    /// Copy proper values from Angle to Vector
 
     for (int i=0 ; i<3 ; i++)    {  desiredAng[i] = angles.theta1[i];    }
 }
 void controlForGui::runIOLoop()
 {
-    /// Megkérjük a falcont, hogy had olvassunk és írjunk bele
-    /// Bullshit readingek elkerülése érdekében lefuttatjuk 2x
+    /// read and write data from / to the falcon
+    ///  double runIOLoop() to ensure that no bullshit readings are present
 
     dev.runIOLoop();
     usleep(10);
     dev.runIOLoop();
-
-    // loopCount = f->getLoopCount();
-
-    //std::cout<< loopCount << std::endl;
 }
 void controlForGui::read_encoder(gmtl::Vec3d& encoderAngle)
 {
-    /// Kiolvassuk encoderből a szögeket, és konvertáljuk radiánba
+    /// read encoder angles, and convert to radian
     int encoder[3] = {f->getEncoderValues()[0], f->getEncoderValues()[1], f->getEncoderValues()[2]};
 
     for (int i = 0 ; i< 3 ; i++)    {    encoderAngle[i] = k->getTheta(encoder[i]);    }
-    encoderAngle *= 0.0174532925; // konverzió radiánba
+    encoderAngle *= 0.0174532925; //  convert to radian
 
 }
 gmtl::Vec3d controlForGui::addImpedance(gmtl::Vec3d& desiredPos, gmtl::Vec3d& posWithImp)
 {
-    ///A beadott pozíció vektorhoz hozzáadja az elvárt dinamikai
-    /// modellből érkező koordinátákat
+    /// Add calculated position from impedance modell to setpoint
     posWithImp=desiredPos;
 
-    posWithImp[0] += (*mPosX)/1;
+    posWithImp[0] += (*mPosX)/1;  /// /1 is a scaling factor, not important
     posWithImp[1] += (*mPosY)/1;
     posWithImp[2] -= (*mPosZ)/1;
 
 }
-/// LED színkezelés
+/// LED control
 void controlForGui::setLedGreen()
 {
-    /// Falcon led színét zöldre állítja
+    /// Set the LED color to GREEN
     f->setLEDStatus(3);
 }
 void controlForGui::setLedBlue()
 {
-    /// Falcon led színét kékre állítja
+    /// Set the LED color to BLUE
     f->setLEDStatus(4);
 }
 void controlForGui::setLedRed()
 {
-    /// Falcon led színét pirosra állítja
+    /// Set the LED color to RED
     f->setLEDStatus(2 << 2 % 3);
 }
 
