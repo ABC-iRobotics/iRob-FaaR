@@ -134,6 +134,8 @@ private slots:
     void on_replayMode_clicked();
 
 
+    void on_resetPosAndVel_clicked();
+
 private:
 
     double key;

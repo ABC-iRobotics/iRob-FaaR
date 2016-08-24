@@ -13,7 +13,7 @@ class OptoThread : public QThread
 public:
     explicit OptoThread(QObject *parent = 0);
     void run();
-    bool Stop;
+    bool Stop,reset;
     double returnXpos;
     double returnYpos;
     double returnZpos;

@@ -107,15 +107,28 @@ if(this->Stop)
 {
     /// if sensor is stopped, reinitialize position
     /// and velocity in iteration modell
-Xkord.setV(1);
-Ykord.setV(1);
-Zkord.setV(1);
+Xkord.resetPosAndVel();
+Ykord.resetPosAndVel();
+Zkord.resetPosAndVel();
+
 
     emit sensorStopped();
     optoDaq.close();
-    break;}
+break;}
 muci.unlock();
-     }
+if(this->reset)
+{
+    Xkord.resetPosAndVel();
+    Ykord.resetPosAndVel();
+    Zkord.resetPosAndVel();
+
+reset=false;
+
+}
+
+
+
+    }
 
 
 }

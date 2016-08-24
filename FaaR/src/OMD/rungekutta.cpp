@@ -34,15 +34,22 @@ RungeKutta::~RungeKutta()
 {
 }
  /// Modifier functions
+void RungeKutta::resetPosAndVel()
+{
+    pos = 0;
+    v = 0;
+}
+
+
 void RungeKutta::setPos(double newpos)
 {
     pos = newpos;
 }
 
-void RungeKutta::setV(double newV)
+void RungeKutta::setV(double newVel)
 {
-    v = 0;
-    pos =0;
+    v = newVel;
+
 }
 
 void RungeKutta::setMass(double newMass)

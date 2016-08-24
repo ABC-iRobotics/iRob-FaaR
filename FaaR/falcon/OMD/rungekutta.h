@@ -9,6 +9,7 @@ class RungeKutta
     RungeKutta();
     RungeKutta(double& m,double& K,double& C,double& h);
     ~RungeKutta();
+    void resetPosAndVel();
     void setPos(double);
     void setV(double);
     void setTime(double);

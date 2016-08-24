@@ -846,3 +846,9 @@ void MainWindow::on_replayMode_clicked()
     }
 }
 
+
+void MainWindow::on_resetPosAndVel_clicked()
+{
+    oThread->reset=true;
+    falconThreads->mControl.currentState=falconThreads->mControl.goHomeMode;
+}
