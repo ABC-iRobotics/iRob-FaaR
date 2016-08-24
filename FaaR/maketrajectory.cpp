@@ -50,7 +50,7 @@ void MakeTrajectory::makeTrajectory()
         for(int i = 0; i < 1440; i++)
         {
             path->Add(Frame(Rotation::Identity(),
-                            Vector(0.04*sin(3.14/180*i),0.04*cos(3.14/180*i),0.120)));
+                            Vector(0.03*sin(3.14/180*i),-0.06,0.120+0.03*cos(3.14/180*i))));
         }
 
 

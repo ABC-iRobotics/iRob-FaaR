@@ -265,7 +265,7 @@ void controlForGui::PID(gmtl::Vec3d desired,gmtl::Vec3d encoderAngle)
 
    // P member //
 gmtl::Vec3d errorVect;
-prevErrorVect = desired-encoderAngle;
+errorVect = desired-encoderAngle;
 mPVect = errorVect*Kp;
     // D member //
 gmtl::Vec3d posChange = errorVect - prevErrorVect;
@@ -715,7 +715,7 @@ void controlForGui::init()
         if(!dev.isFirmwareLoaded())
         {
             std::cout << "Loading firmware" << std::endl;
-            for(int i = 0; i < 100; ++i)
+            for(int i = 0; i < 10; ++i)
             {
                 if(!dev.getFalconFirmware()->loadFirmware(true, NOVINT_FALCON_NVENT_FIRMWARE_SIZE, const_cast<uint8_t*>(NOVINT_FALCON_NVENT_FIRMWARE)))
                 {
@@ -770,11 +770,11 @@ homePos[2] = 0.435;
 
 thisIsHome[0] = 0;
 thisIsHome[1] = 0;
-thisIsHome[2] = 0.11;
+thisIsHome[2] = 0.12;
 
 pos[0] = 0;
 pos[1] = 0;
-pos[2] = 0.11;
+pos[2] = 0.12;
 
 
 }
