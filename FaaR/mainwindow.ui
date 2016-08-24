@@ -197,6 +197,9 @@ QDoubleSpinBox {
                 <property name="text">
                  <string>      Impedance model settings</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                </widget>
               </item>
               <item>
@@ -675,6 +678,9 @@ QDoubleSpinBox {
               <property name="text">
                <string>Impedance control values</string>
               </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
              </widget>
             </item>
             <item row="2" column="0">
@@ -701,12 +707,18 @@ QDoubleSpinBox {
                   <property name="text">
                    <string>X [m]:</string>
                   </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QLabel" name="label_12">
                   <property name="text">
                    <string>Y [m]:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
                   </property>
                   <property name="buddy">
                    <cstring>tabWidget</cstring>
@@ -717,6 +729,9 @@ QDoubleSpinBox {
                  <widget class="QLabel" name="label_13">
                   <property name="text">
                    <string>Z [m]:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -729,6 +744,9 @@ QDoubleSpinBox {
                   <property name="text">
                    <string>0</string>
                   </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
                  </widget>
                 </item>
                 <item>
@@ -736,12 +754,18 @@ QDoubleSpinBox {
                   <property name="text">
                    <string>0</string>
                   </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QLabel" name="sensorZ">
                   <property name="text">
                    <string>0</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
                   </property>
                  </widget>
                 </item>

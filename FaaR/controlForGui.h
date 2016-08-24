@@ -49,7 +49,6 @@ public:
     void setPid(double nKp, double nKd);
     void limitTorque();
     void sendTorque();
-    void sendZeroTorque();
     void readPreviousTime();
     void startNewTime();
 
@@ -97,8 +96,6 @@ public:
     double returnCount();
     double readTime();
 
-    int l; /// not sure what it's used for
-
 /// Some public variables for easier access -> should write accessor / modifier functions and move theese to private later.
     enum State { goHomeMode, stayMode , followPathMode, logPathMode, replayMode, genTrajMode }; State currentState;
 
@@ -124,7 +121,7 @@ public:
     std::vector<double> posy;
     std::vector<double> posz;
     double refAngles[][3];
-    bool justStayHome;
+
     ///Logging read
     std::vector<double> logTh0;
     std::vector<double> logTh1;
@@ -149,7 +146,6 @@ private:
     gmtl::Vec3d prevErrorVect;
     gmtl::Vec3d output;
     gmtl::Vec3d torque;
-    gmtl::Vec3d absolutRefPos;
     double dt;
     double Kp;
     double Kd;
@@ -166,14 +162,11 @@ private:
     gmtl::Vec3d errorVectHome;
     gmtl::Vec3d startEncoder;
     gmtl::Vec3d thisIsHome;
-    gmtl::Vec3d* goThere;
     gmtl::Vec3d endPos;
 
     bool* lowPassIsOn;
     bool isAtHome;
     double loopCount;
-    bool* isBullshitOn;
-
 
 
     /// FiFo

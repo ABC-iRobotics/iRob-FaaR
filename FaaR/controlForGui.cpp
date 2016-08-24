@@ -24,14 +24,13 @@ controlForGui::controlForGui(FalconDevice& device, double& pX, double& pY, doubl
     init();
 
     currentState =goHomeMode;
-         l = 0;
+
 }
 
 ///Control part
     /// Communication + Reading + Impedance
 void controlForGui::trajectoryPath()
 {   std::cout << "running" << std::endl;
-    int loopcount = 0;
     for(int i = 0; i< trajectory.count; i++)
     {
         gmtl::Vec3d placeholder;
@@ -123,7 +122,6 @@ void controlForGui::FalconLoop()
         {
             isAtHome=true;
             std::cout<< "[Home position reached] " << std::endl;
-            justStayHome = true;
             loopCount = 0;
             endPos = pos;
             runIOLoop();
