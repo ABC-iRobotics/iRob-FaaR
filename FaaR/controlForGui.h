@@ -21,6 +21,7 @@
 #include <fstream>
 
 #include "falcon/trajectoryGeneration/maketrajectory.h"
+#include "falconDataStruct.h"
 
 using namespace libnifalcon;
 using namespace std;
@@ -36,7 +37,7 @@ public:
 
     MakeTrajectory trajectory;
     controlForGui();
-    controlForGui(FalconDevice& device, double &pX, double &pY, double &pZ, double &pKp, double &pKd, bool &plowPassIsOn );
+    controlForGui(falconData argsIn);
 
     /// Communication
     void runIOLoop();

@@ -177,8 +177,14 @@ void FalconThreads::startFalcon()
     Kd = 0.025;
     lowPassfilter=false;
     FalconDevice device;
-
-    controlForGui control(device, posX, posY, posZ, Kp, Kd, lowPassfilter);
+    argsIn.posX=&posX;
+    argsIn.posY=&posY;
+    argsIn.posZ=&posZ;
+    argsIn.Kd=&Kd;
+    argsIn.Kp=&Kp;
+    argsIn.lowPassIsOn=&lowPassfilter;
+    argsIn.device=&device;
+    controlForGui control(argsIn);
     mControl = control;
     rt_task_create(&controlTask, "falconLoop", 0, 99, 0);
     rt_task_start(&controlTask, controlLoop, &mControl);

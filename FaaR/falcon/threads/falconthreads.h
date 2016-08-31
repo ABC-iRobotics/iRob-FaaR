@@ -20,6 +20,7 @@
 #define T_ms 1  // = SysClock / 1000
 
 #include "controlForGui.h"
+#include "falconDataStruct.h"
 
 class FalconThreads
 {
@@ -36,8 +37,7 @@ public:
     void startFalcon();
     void stopFalcon();
     controlForGui mControl;
-
-
+    falconData argsIn;
 
     double posX;
     double posY;

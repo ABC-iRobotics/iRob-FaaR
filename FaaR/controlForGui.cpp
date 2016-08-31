@@ -6,20 +6,29 @@ controlForGui::controlForGui()
 
 }
 
-controlForGui::controlForGui(FalconDevice& device, double& pX, double& pY, double& pZ ,
-                             double& pKp , double& pKd,bool &plowPassIsOn)
+controlForGui::controlForGui(falconData argsIn)
 {
     /// constructor, passes arguments by reference from the main thread and the falcon object which was created in the
     /// real-time thread
     /// init() initialises the connection, and sets the proper starting values for the variables
 
-    mPosX =&pX;
-    mPosY =&pY;
-    mPosZ =&pZ;
-    mKp = &pKp;
-    mKd = &pKd;
-    lowPassIsOn=&plowPassIsOn;
-    dev=device;
+    // Passing the arguments from input struct to the member variables //
+
+    mPosX=argsIn.posX;
+    mPosY=argsIn.posY;
+    mPosZ=argsIn.posZ;
+    mKp=argsIn.Kp;
+    mKd=argsIn.Kd;
+    lowPassIsOn=argsIn.lowPassIsOn;
+    dev=*argsIn.device;
+//    mPosX =&pX;
+//    mPosY =&pY;
+//    mPosZ =&pZ;
+//    mKp = &pKp;
+//    mKd = &pKd;
+//    lowPassIsOn=&plowPassIsOn;
+//    dev=device;
+
     dev.setFalconFirmware<FalconFirmwareNovintSDK>();
     init();
 

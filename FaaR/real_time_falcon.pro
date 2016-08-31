@@ -107,7 +107,8 @@ HEADERS  +=\
     qcustomplot.h \
     src/trajectoryGeneration/maketrajectory.h \
     faar.h \
-    pdcontrol.h
+    pdcontrol.h \
+    falconDataStruct.h
 
 FORMS    += mainwindow.ui
 
