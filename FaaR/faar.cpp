@@ -52,22 +52,22 @@ falconThreads->posZ = kord;
 ui->sensorZ->setText(QString::number(kord));
 mz.unlock();
 }
-void::MainWindow::sensorRunStopped()
-{
-ui->writeOut->append("Sensor stopped");
-}
-void::MainWindow::sensorSetupDone()
-{
-ui->writeOut->append("Offset done, sensor is running now");
-}
-void::MainWindow::sensorInited()
-{
-ui->writeOut->append("Sensor initiation started.");
-}
-void::MainWindow::sensorConnectionFailed()
-{
-ui->writeOut->append("Could not connect to sensor");
-}
+//void::MainWindow::sensorRunStopped()
+//{
+//ui->writeOut->append("Sensor stopped");
+//}
+//void::MainWindow::sensorSetupDone()
+//{
+//ui->writeOut->append("Offset done, sensor is running now");
+//}
+//void::MainWindow::sensorInited()
+//{
+//ui->writeOut->append("Sensor initiation started.");
+//}
+//void::MainWindow::sensorConnectionFailed()
+//{
+//ui->writeOut->append("Could not connect to sensor");
+//}
 
 void MainWindow::on_startThreads_clicked()
 {
@@ -81,7 +81,7 @@ void MainWindow::on_startThreads_clicked()
     {
 
         falconThreads->InitThreads();
-        ui->writeOut->append("Initiation done.");
+        //ui->writeOut->append("Initiation done.");
          ui->ThreadFeedback->setText("ON");
         ui->ThreadFeedback->setStyleSheet("background-color: green");
     }
@@ -90,7 +90,7 @@ void MainWindow::on_stopThreads_clicked()
 {
     threadsStarted = 0;
     falconThreads->CloseThreads();
-    ui->writeOut->append("Threads stopped.");
+   // ui->writeOut->append("Threads stopped.");
     ui->ThreadFeedback->setText("OFF");
     ui->ThreadFeedback->setStyleSheet("background-color: red");
 }
@@ -126,7 +126,7 @@ void MainWindow::on_startFalcon_clicked()
     else
     {
         falconThreads->startFalcon();
-        ui->writeOut->append("Falcon running.");
+        //ui->writeOut->append("Falcon running.");
         ui->FalconFeedback->setText("ON");
         ui->FalconFeedback->setStyleSheet("background-color: green");
     }
@@ -135,7 +135,7 @@ void MainWindow::on_stopFalcon_clicked()
 {
     falconStarted = 0;
     falconThreads->stopFalcon();
-    ui->writeOut->append("Falcon stopped.");
+   // ui->writeOut->append("Falcon stopped.");
     ui->FalconFeedback->setText("OFF");
     ui->FalconFeedback->setStyleSheet("background-color: red");
 }

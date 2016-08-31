@@ -61,10 +61,10 @@ public slots:
     void onXchange(double);
     void onYchange(double);
     void onZchange(double);
-    void sensorInited();
-    void sensorConnectionFailed();
-    void sensorSetupDone();
-    void sensorRunStopped();
+//    void sensorInited();
+//    void sensorConnectionFailed();
+//    void sensorSetupDone();
+//    void sensorRunStopped();
     void encoderplot1();
     void encoderplot2();
     void encoderplot3();
