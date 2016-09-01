@@ -45,17 +45,20 @@ double returnZpos()
 void OptoThread::run()
 {
 
-    emit sensorInitialized();
-    Config_default(optoDaq,optoPorts,0);            // Set sensor parameters
-    OffsetAll(optoDaq,Offsetx,Offsety,Offsetz);     // Calculate offset values from 5 samples
-    Offset[0]=Offsetx;                              // Array initialisation
+    isConfigSet = Config_default(optoDaq,optoPorts,0);            // Set sensor parameters
+    emit configSet(isConfigSet);            // send signal for gui feedback
+    if (isConfigSet)
+    {
+    bool isOffsetSet;
+    isOffsetSet = OffsetAll(optoDaq,Offsetx,Offsety,Offsetz);     // Calculate offset values from 5 samples
+    Offset[0]=Offsetx;                                                 // Array initialisation
     Offset[1]=Offsety;
     Offset[2]=Offsetz;
+    emit offsetSet(isOffsetSet);
+    }
     Xkord.setPos(0);
     Ykord.setPos(0);
     Zkord.setPos(0);
-    emit offsetDone();
-
 
     while(1)
     {
@@ -111,8 +114,6 @@ Xkord.resetPosAndVel();
 Ykord.resetPosAndVel();
 Zkord.resetPosAndVel();
 
-
-    emit sensorStopped();
     optoDaq.close();
 break;}
 muci.unlock();

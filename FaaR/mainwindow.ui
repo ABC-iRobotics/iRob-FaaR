@@ -191,7 +191,16 @@ QDoubleSpinBox {
           <property name="title">
            <string>Control buttons and feedback</string>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_12">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
            <item>
             <layout class="QGridLayout" name="controlButtonsAll">
              <item row="3" column="0">
@@ -284,7 +293,7 @@ QDoubleSpinBox {
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QPushButton" name="startProgram">
+              <widget class="QPushButton" name="startSensor">
                <property name="text">
                 <string>Start sensor</string>
                </property>
@@ -314,6 +323,9 @@ QDoubleSpinBox {
                   <property name="text">
                    <string>Thread not running</string>
                   </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
                  </widget>
                 </item>
                 <item>
@@ -321,21 +333,21 @@ QDoubleSpinBox {
                   <item>
                    <layout class="QVBoxLayout" name="verticalLayout_6">
                     <item>
-                     <widget class="QLabel" name="label_21">
+                     <widget class="QLabel" name="labelFalconConnected">
                       <property name="text">
                        <string>Falcon not connected</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLabel" name="label_22">
+                     <widget class="QLabel" name="labelFalconInited">
                       <property name="text">
-                       <string>Falcon Initialised</string>
+                       <string>Falcon not initialised</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLabel" name="label_23">
+                     <widget class="QLabel" name="labelFalconStatus">
                       <property name="text">
                        <string>Falcon IDLE</string>
                       </property>
@@ -346,23 +358,23 @@ QDoubleSpinBox {
                   <item>
                    <layout class="QVBoxLayout" name="verticalLayout_4">
                     <item>
-                     <widget class="QLabel" name="label_20">
+                     <widget class="QLabel" name="labelSensorConnection">
                       <property name="text">
-                       <string>Sensor offset Ok</string>
+                       <string>Sensor connection - none</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLabel" name="label_27">
+                     <widget class="QLabel" name="labelSensorOffset">
                       <property name="text">
-                       <string>Sensor connection OK</string>
+                       <string>Sensor offset - none</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLabel" name="label_19">
+                     <widget class="QLabel" name="labelSensorRunning">
                       <property name="text">
-                       <string>Sensor running</string>
+                       <string>Sensor not running</string>
                       </property>
                      </widget>
                     </item>
@@ -374,6 +386,30 @@ QDoubleSpinBox {
               </item>
              </layout>
             </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>Current Operating Mode: </string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>none</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -939,20 +975,6 @@ QDoubleSpinBox {
          </widget>
         </item>
        </layout>
-       <zorder>label_8</zorder>
-       <zorder>label_20</zorder>
-       <zorder>label_19</zorder>
-       <zorder>label_21</zorder>
-       <zorder>label_22</zorder>
-       <zorder>label_23</zorder>
-       <zorder>resetPosAndVel</zorder>
-       <zorder>label_27</zorder>
-       <zorder></zorder>
-       <zorder>groupBox</zorder>
-       <zorder>groupBox_5</zorder>
-       <zorder>groupBox_6</zorder>
-       <zorder>groupBox_7</zorder>
-       <zorder>frame_3</zorder>
       </widget>
       <widget class="QWidget" name="tab_2">
        <property name="styleSheet">
@@ -1813,12 +1835,6 @@ QDoubleSpinBox {
               </layout>
              </item>
             </layout>
-            <zorder>pathZ</zorder>
-            <zorder>label_26</zorder>
-            <zorder>pathY</zorder>
-            <zorder>label_24</zorder>
-            <zorder>label_25</zorder>
-            <zorder>pathX</zorder>
             <zorder></zorder>
             <zorder></zorder>
             <zorder></zorder>
@@ -1913,17 +1929,6 @@ QDoubleSpinBox {
          </spacer>
         </item>
        </layout>
-       <zorder>frame_2</zorder>
-       <zorder>pathZ</zorder>
-       <zorder>label_25</zorder>
-       <zorder>pathY</zorder>
-       <zorder>label_24</zorder>
-       <zorder>pathX</zorder>
-       <zorder>label_26</zorder>
-       <zorder>frame_4</zorder>
-       <zorder>frame_2</zorder>
-       <zorder>frame_4</zorder>
-       <zorder>verticalSpacer_2</zorder>
       </widget>
      </widget>
     </item>

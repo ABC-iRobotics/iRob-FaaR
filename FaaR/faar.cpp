@@ -12,10 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(oThread,SIGNAL(xkord(double)),this,SLOT(onXchange(double)));
     connect(oThread,SIGNAL(ykord(double)),this,SLOT(onYchange(double)));
     connect(oThread,SIGNAL(zkord(double)),this,SLOT(onZchange(double)));
-    connect(oThread,SIGNAL(sensorStopped()),this,SLOT(sensorRunStopped()));
-    connect(oThread,SIGNAL(offsetDone()),this,SLOT(sensorSetupDone()));
-    connect(oThread,SIGNAL(sensorInitialized()),this,SLOT(sensorInited()));
-    connect(oThread,SIGNAL(connectionError()),this,SLOT(sensorConnectionFailed()));
+    connect(oThread,SIGNAL(configSet(bool)),this,SLOT(sensorConfigStatus(bool)));
+    connect(oThread,SIGNAL(offsetSet(bool)),this,SLOT(offssetStatus(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -52,22 +50,42 @@ falconThreads->posZ = kord;
 ui->sensorZ->setText(QString::number(kord));
 mz.unlock();
 }
-//void::MainWindow::sensorRunStopped()
-//{
-//ui->writeOut->append("Sensor stopped");
-//}
-//void::MainWindow::sensorSetupDone()
-//{
-//ui->writeOut->append("Offset done, sensor is running now");
-//}
-//void::MainWindow::sensorInited()
-//{
-//ui->writeOut->append("Sensor initiation started.");
-//}
-//void::MainWindow::sensorConnectionFailed()
-//{
-//ui->writeOut->append("Could not connect to sensor");
-//}
+void::MainWindow::sensorConfigStatus(bool status)
+{
+    if (status == true)  // If connection is up, set feedback label , and feedback button
+    {
+ui->labelSensorConnection->setText("Sensor connected");
+ui->SensoFeedback->setText("ON");
+ui->SensoFeedback->setStyleSheet("background-color: green");
+    }
+    else  // else display error and set feedback
+    {
+ui->labelSensorConnection->setText("Sensor Could not open port");
+ui->SensoFeedback->setText("OFF");
+ui->SensoFeedback->setStyleSheet("background-color: red");
+
+
+/// Show message box about the problem ///
+QMessageBox msgBox;
+msgBox.setText("Could not open port to sensor, try reconnecting it to the computer and restart the program");
+msgBox.exec();
+
+    }
+
+}
+void::MainWindow::offssetStatus(bool status)
+{
+    if (status == true)  // If connection is up, set feedback label , and feedback button
+    {
+        ui->labelSensorOffset->setText("Sensor Offset Done");
+    }
+    else
+    {
+        ui->labelSensorOffset->setText("Sensor Offset Error");
+
+    }
+
+}
 
 void MainWindow::on_startThreads_clicked()
 {
@@ -94,7 +112,7 @@ void MainWindow::on_stopThreads_clicked()
     ui->ThreadFeedback->setText("OFF");
     ui->ThreadFeedback->setStyleSheet("background-color: red");
 }
-void MainWindow::on_startProgram_clicked()
+void MainWindow::on_startSensor_clicked()
 {
     sensorStarted++;
     if(sensorStarted > 1)
@@ -105,14 +123,15 @@ void MainWindow::on_startProgram_clicked()
     {
         oThread->Stop = false;
         oThread->start();
-        ui->SensoFeedback->setText("ON");
-        ui->SensoFeedback->setStyleSheet("background-color: green");
     }
 }
 void MainWindow::on_stopProgram_clicked()
 {
     sensorStarted = 0;
     oThread->Stop = true;
+    ui->labelSensorConnection->setText("Sensor Stopped");
+    ui->labelSensorOffset->setText("Sensor offset -none");
+    ui->labelSensorRunning->setText("Sensor not running");
     ui->SensoFeedback->setText("OFF");
     ui->SensoFeedback->setStyleSheet("background-color: red");
 }

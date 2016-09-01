@@ -69,13 +69,14 @@ public slots:
     void encoderplot2();
     void encoderplot3();
 
-
+    void sensorConfigStatus(bool);
+    void offssetStatus(bool);
 
 private slots:
 
     void on_startThreads_clicked();
     void on_stopThreads_clicked();
-    void on_startProgram_clicked();
+    void on_startSensor_clicked();
     void on_stopProgram_clicked();
     void on_startFalcon_clicked();
     void on_stopFalcon_clicked();

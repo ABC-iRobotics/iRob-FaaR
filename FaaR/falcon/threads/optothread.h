@@ -24,14 +24,22 @@ public:
     RungeKutta Z;
 
     QElapsedTimer time;
+
+    bool isConfigSet;
+
+
+
 signals:
     void xkord(double);
     void ykord(double);
     void zkord(double);
-    void sensorInitialized();
-    void connectionError();
-    void offsetDone();
-    void sensorStopped();
+
+    void configSet(bool);
+    void offsetSet(bool);
+//    void sensorInitialized();
+//    void connectionError();
+//    void offsetDone();
+//    void sensorStopped();
 };
 
 #endif // OPTOTHREAD_H

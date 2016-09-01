@@ -106,7 +106,7 @@ bool OpenPort(OptoDAQ & p_optoDAQ, OptoPorts & p_Ports, int p_iIndex)
 }
 
 
-void Config_default(OptoDAQ & p_optodaq, OptoPorts & p_optoPorts, int iPortindex)
+bool Config_default(OptoDAQ & p_optodaq, OptoPorts & p_optoPorts, int iPortindex)
 {
     // Changeable values, feel free to play with them
     int iPortIndex = 0;  // The index of the port which will be opened
@@ -115,24 +115,26 @@ void Config_default(OptoDAQ & p_optodaq, OptoPorts & p_optoPorts, int iPortindex
     ///////////////////
     if (OpenPort(p_optodaq, p_optoPorts, iPortIndex) == false) {
         std::cout << "Could not open port" << std::endl;
+        return false;
     }
     bool bConfig = SetConfig(p_optodaq, iSpeed, iFilter);
     if (bConfig == false) {
         std::cout << "Could not set config" << std::endl;
         p_optodaq.close();
-        return;
+        return false;
     }
     if (bConfig == true) {
         std::cout << "Config feltöltve" << std::endl;
         p_optodaq.getConfig();
-
+        return true;
     }
 }
 
     /// take 5 samples, discard first one ( it's usually bullshit )
     /// calculate average -> output offset values
-void Offseteles(OptoDAQ & poptodaq, double &Offx, double &Offy, double &Offz)
+bool Offseteles(OptoDAQ & poptodaq, double &Offx, double &Offy, double &Offz)
 {
+    bool done;
     OptoPackage pack;
     double Fxavg = 0;	double Fyavg = 0;	double Fzavg = 0;
 
@@ -164,8 +166,20 @@ void Offseteles(OptoDAQ & poptodaq, double &Offx, double &Offy, double &Offz)
     Offx = Xoffset;
     Offy = Yoffset;
     Offz = Zoffset;
+    if (Offx != 0)
+    {
+        done = true;
+    std::cout << " Offsets are done!  " << std::endl;
+    return done;
+    }
+    else
+    {
+        done = false;
+        std::cout << " Failed to set tare  " << std::endl;
+        return done;
 
-    std::cout << " Az offsetek beállítva, szimuláció indul! " << std::endl;
+    }
+
 }
 
     /// Function to read force, and subtract offset values and convert mN to N
@@ -189,7 +203,16 @@ void ReadForce(OptoDAQ & p_optodaq, double offsetek[], double* Fx, double* Fy, d
 }
 
     /// Not sure why we have this here
-void OffsetAll(OptoDAQ & optoDaq,double & Offsetx,double & Offsety,double & Offsetz)
+bool OffsetAll(OptoDAQ & optoDaq,double & Offsetx,double & Offsety,double & Offsetz)
 {
-    Offseteles(optoDaq, Offsetx, Offsety, Offsetz);
+    bool isItDone = Offseteles(optoDaq, Offsetx, Offsety, Offsetz);
+    if (isItDone==true)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
 }
