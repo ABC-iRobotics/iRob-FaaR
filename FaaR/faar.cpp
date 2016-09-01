@@ -82,6 +82,7 @@ void::MainWindow::offssetStatus(bool status)
     else
     {
         ui->labelSensorOffset->setText("Sensor Offset Error");
+        ui->labelSensorRunning->setText("Sensor is Running");
 
     }
 
