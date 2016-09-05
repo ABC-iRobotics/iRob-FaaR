@@ -872,3 +872,4 @@ void MainWindow::on_resetPosAndVel_clicked()
     oThread->reset=true;
     falconThreads->mControl.currentState=falconThreads->mControl.goHomeMode;
 }
+

@@ -187,3 +187,8 @@ DEPENDPATH += $$PWD/../../../../../usr/local/include
 CONFIG += console
 
 OTHER_FILES +=
+
+RESOURCES += \
+    resources.qrc
+
+DISTFILES +=

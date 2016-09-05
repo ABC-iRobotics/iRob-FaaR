@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/pics">
+        <file>img/BARK_logo.png</file>
+        <file>img/BARK_logo_eng_int.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>img/optoforce_logo.png</file>
+    </qresource>
+</RCC>
