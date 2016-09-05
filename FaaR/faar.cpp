@@ -14,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(oThread,SIGNAL(zkord(double)),this,SLOT(onZchange(double)));
     connect(oThread,SIGNAL(configSet(bool)),this,SLOT(sensorConfigStatus(bool)));
     connect(oThread,SIGNAL(offsetSet(bool)),this,SLOT(offssetStatus(bool)));
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -103,6 +106,7 @@ void MainWindow::on_startThreads_clicked()
         //ui->writeOut->append("Initiation done.");
          ui->ThreadFeedback->setText("ON");
         ui->ThreadFeedback->setStyleSheet("background-color: green");
+        ui->labelThreadFeedback->setText("Thread running");
     }
 }
 void MainWindow::on_stopThreads_clicked()
@@ -147,8 +151,7 @@ void MainWindow::on_startFalcon_clicked()
     {
         falconThreads->startFalcon();
         //ui->writeOut->append("Falcon running.");
-        ui->FalconFeedback->setText("ON");
-        ui->FalconFeedback->setStyleSheet("background-color: green");
+        on_FalconFeedback_clicked();
     }
 }
 void MainWindow::on_stopFalcon_clicked()
@@ -627,28 +630,33 @@ void MainWindow::on_ModeStartButton_clicked()
        /* falconThreads->justStayHere=true;
         falconThreads->goToPoint=false;*/
         falconThreads->mControl.currentState=falconThreads->mControl.stayMode;
+        ui->labelOperationMode->setText("Stay Mode");
 
     }
     else if(ui->goHomeMode->isChecked())
     {
         falconThreads->mControl.currentState=falconThreads->mControl.goHomeMode;
         falconThreads->mControl.resetFirstRun();
+        ui->labelOperationMode->setText("Go home mode");
     }
 
     else if (ui->posMode->isChecked())
     {
         falconThreads->mControl.currentState=falconThreads->mControl.followPathMode;
+        ui->labelOperationMode->setText("Follow path mode");
     }
 
     else if(ui->replayMode->isChecked())
     {
         falconThreads->mControl.currentState=falconThreads->mControl.replayMode;
+        ui->labelOperationMode->setText("Replay mode");
     }
 
     else if(ui->genTrajMode->isChecked())
     {
         falconThreads->mControl.genTrajectoryPath();
         falconThreads->mControl.currentState=falconThreads->mControl.genTrajMode;
+        ui->labelOperationMode->setText("gen traj mode");
     }
 }
 
@@ -871,5 +879,41 @@ void MainWindow::on_resetPosAndVel_clicked()
 {
     oThread->reset=true;
     falconThreads->mControl.currentState=falconThreads->mControl.goHomeMode;
+
+}
+
+
+void MainWindow::on_FalconFeedback_clicked()
+{
+    if (falconThreads->mControl.args.isItConnected)
+    {
+        ui->labelFalconConnected->setText("Falcon found");
+    }
+    if (falconThreads->mControl.args.isItFound && falconThreads->mControl.args.isItConnected)
+    {
+        ui->labelFalconConnected->setText("Falcon connected");
+
+    }
+
+    if (falconThreads->mControl.args.isItFound && falconThreads->mControl.args.isItConnected && falconThreads->mControl.args.isFirmWareLoaded)
+    {
+        ui->labelFalconInited->setText("Firmware Loaded");
+        ui->labelFalconStatus->setText("Falcon Ready");
+        ui->FalconFeedback->setText("ON");
+        ui->FalconFeedback->setStyleSheet("background-color: green");
+        ui->labelOperationMode->setText("Go home mode");
+        isFalconReady = true;
+
+    }
+    else
+    {
+        ui->labelFalconInited->setText("Could not load firmware");
+        QMessageBox msgBox;
+        ui->FalconFeedback->setText("OFF");
+        ui->FalconFeedback->setStyleSheet("background-color: red");
+        msgBox.setText("Falcon could not be initialised properly, try restarting the program");
+        msgBox.exec();
+        isFalconReady = false;
+    }
 }
 

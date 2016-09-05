@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <fstream>
 #include <QFileDialog>
+#include <falconDataStruct.h>
 
 namespace Ui {
 class MainWindow;
@@ -42,6 +43,8 @@ public:
     gmtl::Vec3d p0;
     gmtl::Vec3d p1;
     int nn;
+
+    bool isFalconReady;
 
     void setupencoderplot2();
     void setupencoderplot3();
@@ -136,6 +139,8 @@ private slots:
 
 
     void on_resetPosAndVel_clicked();
+
+    void on_FalconFeedback_clicked();
 
 private:
 

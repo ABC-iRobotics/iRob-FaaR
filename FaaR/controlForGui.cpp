@@ -13,6 +13,7 @@ controlForGui::controlForGui(falconData argsIn)
     /// init() initialises the connection, and sets the proper starting values for the variables
 
     // Passing the arguments from input struct to the member variables //
+    //args = argsIn;
 
     mPosX=argsIn.posX;
     mPosY=argsIn.posY;
@@ -701,13 +702,16 @@ void controlForGui::init()
     if(!dev.getDeviceCount(num_falcons))
     {
         std::cout << "Cannot get device count" << std::endl;
+        args.isItConnected=false;
         return;
     }
     count = 0;
     std::cout << "Falcons found: " << (int)num_falcons << std::endl;
+    args.isItFound=true;
     if(num_falcons == 0)
     {
         std::cout << "No falcons found, exiting..." << std::endl;
+        args.isItFound=false;
         return;
     }
         int z=0;
@@ -715,9 +719,11 @@ void controlForGui::init()
         if(!dev.open(z))
         {
             std::cout << "Cannot open falcon - Error: " << std::endl; // << dev.getErrorCode() << std::endl;
+            args.isItConnected=false;
             return;
         }
         std::cout << "Opened falcon" << std::endl;
+        args.isItConnected=true;
 
         if(!dev.isFirmwareLoaded())
         {
@@ -727,11 +733,13 @@ void controlForGui::init()
                 if(!dev.getFalconFirmware()->loadFirmware(true, NOVINT_FALCON_NVENT_FIRMWARE_SIZE, const_cast<uint8_t*>(NOVINT_FALCON_NVENT_FIRMWARE)))
                 {
                     std::cout << "Could not load firmware" << std::endl;
+                    args.isFirmWareLoaded=false;
                     return;
                 }
                 else
                 {
                     std::cout <<"Firmware loaded" << std::endl;
+                    args.isFirmWareLoaded=true;
                     break;
                 }
             }
@@ -849,4 +857,16 @@ void controlForGui::setLedRed()
 double controlForGui::readTime()
 {
     return time;
+}
+
+bool controlForGui::isFirmWareLoaded()
+{
+    if (!dev.isFirmwareLoaded())
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }

@@ -1,8 +1,9 @@
 #include "falcon/threads/falconthreads.h"
-#include <fstream>
+
 
 FalconThreads::FalconThreads()
 {
+
 }
 
 RT_TASK periodic_real_time_task; //Here we can define tasks
@@ -44,7 +45,6 @@ void controlLoop(void *arg)
     double totalTime = 0;
     double loopTime = 0;
     int loopCountofLog = 1;
-
     gmtl::Vec3d encoderAng;
     bool prevModeWasLog = false;
     controlForGui* ctrl = reinterpret_cast<controlForGui *>(arg);
@@ -111,6 +111,7 @@ void controlLoop(void *arg)
 
 void FalconThreads::OpenLog(std::string openedFileName)
 {
+
     /// This function opens a log file (which's name was passed by QFiledialog)
     /// and loads it's content to a vector , then pass it to the control object
     ifstream logfile;
@@ -136,8 +137,6 @@ void FalconThreads::OpenLog(std::string openedFileName)
             std::cout<< "[Open Log] Path points stored" << mControl.replayCount <<std::endl;
     logfile.close();
 }
-
-
 void FalconThreads::InitThreads()
 {
     static int err;
@@ -154,7 +153,6 @@ void FalconThreads::InitThreads()
 
 
 }
-
 void FalconThreads::CloseThreads(void)
 {
     //Close RT PIPE - Arguments: &RT_PIPE
@@ -166,9 +164,6 @@ void FalconThreads::CloseThreads(void)
     std::cout << "Threads stopped.\n" << std::endl;
 
 }
-
-
-
 void FalconThreads::startFalcon()
 {
     if (firstTimeRun)
@@ -184,6 +179,9 @@ void FalconThreads::startFalcon()
     argsIn.Kp=&Kp;
     argsIn.lowPassIsOn=&lowPassfilter;
     argsIn.device=&device;
+    argsIn.isFirmWareLoaded=false;
+    argsIn.isItConnected=false;
+    argsIn.isItFound=false;
     controlForGui control(argsIn);
     mControl = control;
     rt_task_create(&controlTask, "falconLoop", 0, 99, 0);

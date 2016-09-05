@@ -105,7 +105,7 @@ HEADERS  +=\
     controlForGui.h \
     falcon/threads/optothread.h \
     qcustomplot.h \
-    src/trajectoryGeneration/maketrajectory.h \
+    falcon/trajectoryGeneration/maketrajectory.h \
     faar.h \
     pdcontrol.h \
     falconDataStruct.h
