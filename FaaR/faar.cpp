@@ -106,6 +106,7 @@ void MainWindow::on_startThreads_clicked()
         //ui->writeOut->append("Initiation done.");
          ui->ThreadFeedback->setText("ON");
         ui->ThreadFeedback->setStyleSheet("background-color: green");
+        ui->labelThreadFeedback->setText("Thread running");
     }
 }
 void MainWindow::on_stopThreads_clicked()
@@ -629,28 +630,33 @@ void MainWindow::on_ModeStartButton_clicked()
        /* falconThreads->justStayHere=true;
         falconThreads->goToPoint=false;*/
         falconThreads->mControl.currentState=falconThreads->mControl.stayMode;
+        ui->labelOperationMode->setText("Stay Mode");
 
     }
     else if(ui->goHomeMode->isChecked())
     {
         falconThreads->mControl.currentState=falconThreads->mControl.goHomeMode;
         falconThreads->mControl.resetFirstRun();
+        ui->labelOperationMode->setText("Go home mode");
     }
 
     else if (ui->posMode->isChecked())
     {
         falconThreads->mControl.currentState=falconThreads->mControl.followPathMode;
+        ui->labelOperationMode->setText("Follow path mode");
     }
 
     else if(ui->replayMode->isChecked())
     {
         falconThreads->mControl.currentState=falconThreads->mControl.replayMode;
+        ui->labelOperationMode->setText("Replay mode");
     }
 
     else if(ui->genTrajMode->isChecked())
     {
         falconThreads->mControl.genTrajectoryPath();
         falconThreads->mControl.currentState=falconThreads->mControl.genTrajMode;
+        ui->labelOperationMode->setText("gen traj mode");
     }
 }
 
@@ -895,7 +901,9 @@ void MainWindow::on_FalconFeedback_clicked()
         ui->labelFalconStatus->setText("Falcon Ready");
         ui->FalconFeedback->setText("ON");
         ui->FalconFeedback->setStyleSheet("background-color: green");
+        ui->labelOperationMode->setText("Go home mode");
         isFalconReady = true;
+
     }
     else
     {

@@ -328,7 +328,7 @@ QDoubleSpinBox {
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_7">
                 <item>
-                 <widget class="QLabel" name="label_8">
+                 <widget class="QLabel" name="labelThreadFeedback">
                   <property name="text">
                    <string>Thread not running</string>
                   </property>
