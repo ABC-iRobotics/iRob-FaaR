@@ -21,9 +21,13 @@
 
 #include "controlForGui.h"
 #include "falconDataStruct.h"
+#include "ui_mainwindow.h"
+#include <QApplication>
+#include <QMainWindow>
 
 class FalconThreads
 {
+
 public:
     FalconThreads();
 
@@ -54,6 +58,9 @@ private:
     double logTh0V;
     double logTh1V;
     double logTh2V;
+
+signals:
+    void onSomethingHappened();
 
 };
 

@@ -12,7 +12,6 @@
 #include <vector>
 #include <QDebug>
 
-
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/chrono.hpp>
@@ -22,6 +21,7 @@
 
 #include "falcon/trajectoryGeneration/maketrajectory.h"
 #include "falconDataStruct.h"
+#include "pdcontrol.h"
 
 using namespace libnifalcon;
 using namespace std;
@@ -31,7 +31,6 @@ using namespace StamperKinematicImpl;
 
 class controlForGui
 {
-
 
 public:
 
@@ -97,6 +96,8 @@ public:
     double returnCount();
     double readTime();
 
+    bool isFirmWareLoaded();
+
 /// Some public variables for easier access -> should write accessor / modifier functions and move theese to private later.
     enum State { goHomeMode, stayMode , followPathMode, logPathMode, replayMode, genTrajMode }; State currentState;
 
@@ -128,13 +129,23 @@ public:
     std::vector<double> logTh1;
     std::vector<double> logTh2;
 
+   falconData args;
+
+
 private:
     /// Accessing falcon communication :
     boost::shared_ptr<FalconFirmware> f;
     FalconKinematic* k;
     FalconDevice dev;
 
+
+
+
+
     /// Used for PID ///
+    //  PDControl PD;
+
+
     Angle angles;
     gmtl::Vec3d pos;
     gmtl::Vec3d mPVect;

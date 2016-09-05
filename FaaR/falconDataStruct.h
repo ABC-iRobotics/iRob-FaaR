@@ -10,7 +10,8 @@
 #include "falcon/gmtl/gmtl.h"
 #include <vector>
 #include <QDebug>
-
+#include <QObject>
+#include <string>
 using namespace libnifalcon;
 using namespace std;
 using namespace StamperKinematicImpl;
@@ -29,6 +30,14 @@ struct falconData{
     double *Kd;
 
     bool *lowPassIsOn;
+
+    bool isItFound;
+    bool isItConnected;
+
+    bool isFirmWareLoaded;
+
 };
+
+
 
 #endif // FALCONDATASTRUCT_H

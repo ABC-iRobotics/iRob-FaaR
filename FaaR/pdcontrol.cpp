@@ -32,6 +32,8 @@ return mOutPut;
 
 void PDControl::setValues(double newKp, double newKd)
 {
+    // Overwrite Kp and Kd values //
+    
     mKp = newKp;
     mKd = newKd;
 }

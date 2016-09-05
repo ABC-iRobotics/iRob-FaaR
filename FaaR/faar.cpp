@@ -14,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(oThread,SIGNAL(zkord(double)),this,SLOT(onZchange(double)));
     connect(oThread,SIGNAL(configSet(bool)),this,SLOT(sensorConfigStatus(bool)));
     connect(oThread,SIGNAL(offsetSet(bool)),this,SLOT(offssetStatus(bool)));
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -147,8 +150,7 @@ void MainWindow::on_startFalcon_clicked()
     {
         falconThreads->startFalcon();
         //ui->writeOut->append("Falcon running.");
-        ui->FalconFeedback->setText("ON");
-        ui->FalconFeedback->setStyleSheet("background-color: green");
+        on_FalconFeedback_clicked();
     }
 }
 void MainWindow::on_stopFalcon_clicked()
@@ -871,4 +873,38 @@ void MainWindow::on_resetPosAndVel_clicked()
 {
     oThread->reset=true;
     falconThreads->mControl.currentState=falconThreads->mControl.goHomeMode;
+
+}
+
+
+void MainWindow::on_FalconFeedback_clicked()
+{
+    if (falconThreads->mControl.args.isItConnected)
+    {
+        ui->labelFalconConnected->setText("Falcon found");
+    }
+    if (falconThreads->mControl.args.isItFound && falconThreads->mControl.args.isItConnected)
+    {
+        ui->labelFalconConnected->setText("Falcon connected");
+
+    }
+
+    if (falconThreads->mControl.args.isItFound && falconThreads->mControl.args.isItConnected && falconThreads->mControl.args.isFirmWareLoaded)
+    {
+        ui->labelFalconInited->setText("Firmware Loaded");
+        ui->labelFalconStatus->setText("Falcon Ready");
+        ui->FalconFeedback->setText("ON");
+        ui->FalconFeedback->setStyleSheet("background-color: green");
+        isFalconReady = true;
+    }
+    else
+    {
+        ui->labelFalconInited->setText("Could not load firmware");
+        QMessageBox msgBox;
+        ui->FalconFeedback->setText("OFF");
+        ui->FalconFeedback->setStyleSheet("background-color: red");
+        msgBox.setText("Falcon could not be initialised properly, try restarting the program");
+        msgBox.exec();
+        isFalconReady = false;
+    }
 }
