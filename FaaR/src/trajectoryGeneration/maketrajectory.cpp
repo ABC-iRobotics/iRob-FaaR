@@ -351,6 +351,13 @@ void MakeTrajectory::generateTrajectory()
             genAy.push_back(current_acc.vel[1]);
             genAz.push_back(current_acc.vel[2]);
             genN.push_back(genCount);
+            pos[0] = current_pose.p.x();
+            pos[1] = current_pose.p.y();
+            pos[2] = current_pose.p.z();
+            IK(angles,pos);
+            genOf << angles.theta1[0] << " " << angles.theta1[1] <<" "
+                              << angles.theta1[2] << " "<< pos[0]<< " "<<pos[1]<<" "<<pos[2] <<endl;
+
             //std::cout << "current pose x: " << current_acc.vel[2] << std::endl;
             genCount++;
         }
@@ -406,5 +413,79 @@ void MakeTrajectory::generateTrajectory()
     std::cout << "Trajectory Generated." << std::endl;
 
     genPath = new KDL::Path_RoundedComposite(0.0001 ,0.0001, new KDL::RotationalInterpolation_SingleAxis());
+
+}
+
+void MakeTrajectory::IK(Angle& angles,const gmtl::Vec3d& worldPosition)
+{
+    //////////////////////////////////////////////////////////
+    //Inverse kinematics. All as in Stamper's PhD except for
+    //the addition of a second offset direction 's' per arm
+    //First we need the offset vector from the origin of the XYZ coordinate frame to the
+    //UVW coordinate frame:
+    gmtl::Vec3d offset(-libnifalcon::r,-libnifalcon::s,0);
+
+
+    //Next lets convert the current end effector position into the UVW coordinates
+    //of each leg:
+    gmtl::Matrix33d R;
+    R(0,0)=cos(libnifalcon::phy[0]);	R(0,1)=sin(libnifalcon::phy[0]);	R(0,2)=0;
+    R(1,0)=-sin(libnifalcon::phy[0]);	R(1,1)=cos(libnifalcon::phy[0]);	R(1,2)=0;
+    R(2,0)=0;							R(2,1)=0;							R(2,2)=1;
+    gmtl::Vec3d P1 = R*worldPosition + offset;
+
+    R(0,0)=cos(libnifalcon::phy[1]);	R(0,1)=sin(libnifalcon::phy[1]);	R(0,2)=0;
+    R(1,0)=-sin(libnifalcon::phy[1]);	R(1,1)=cos(libnifalcon::phy[1]);	R(1,2)=0;
+    R(2,0)=0;							R(2,1)=0;							R(2,2)=1;
+    gmtl::Vec3d P2 = R*worldPosition + offset;
+
+    R(0,0)=cos(libnifalcon::phy[2]);	R(0,1)=sin(libnifalcon::phy[2]);	R(0,2)=0;
+    R(1,0)=-sin(libnifalcon::phy[2]);	R(1,1)=cos(libnifalcon::phy[2]);	R(1,2)=0;
+    R(2,0)=0;							R(2,1)=0;							R(2,2)=1;
+    gmtl::Vec3d P3 = R*worldPosition + offset;
+
+
+    //Do the theta3's first. This is +/- but fortunately in the Falcon's case
+    //only the + result is correct
+    angles.theta3[0] = acos( (P1[1]+libnifalcon::f)/libnifalcon::b);
+    angles.theta3[1] = acos( (P2[1]+libnifalcon::f)/libnifalcon::b);
+    angles.theta3[2] = acos( (P3[1]+libnifalcon::f)/libnifalcon::b);
+
+
+    //Next find the theta1's
+    //In certain cases could query the theta1 values directly and save a bit of processing
+    //Again we have a +/- situation but only + is relevent
+    double l01 = P1[2]*P1[2] + P1[0]*P1[0] + 2*libnifalcon::c*P1[0] - 2*libnifalcon::a*P1[0] + libnifalcon::a*libnifalcon::a + libnifalcon::c*libnifalcon::c - libnifalcon::d*libnifalcon::d - libnifalcon::e*libnifalcon::e - libnifalcon::b*libnifalcon::b*sin(angles.theta3[0])*sin(angles.theta3[0]) - 2*libnifalcon::b*libnifalcon::e*sin(angles.theta3[0]) - 2*libnifalcon::b*libnifalcon::d*sin(angles.theta3[0]) - 2*libnifalcon::d*libnifalcon::e - 2*libnifalcon::a*libnifalcon::c;
+    double l11 = -4*libnifalcon::a*P1[2];
+    double l21 = P1[2]*P1[2] + P1[0]*P1[0] + 2*libnifalcon::c*P1[0] + 2*libnifalcon::a*P1[0] + libnifalcon::a*libnifalcon::a + libnifalcon::c*libnifalcon::c - libnifalcon::d*libnifalcon::d - libnifalcon::e*libnifalcon::e - libnifalcon::b*libnifalcon::b*sin(angles.theta3[0])*sin(angles.theta3[0]) - 2*libnifalcon::b*libnifalcon::e*sin(angles.theta3[0]) - 2*libnifalcon::b*libnifalcon::d*sin(angles.theta3[0]) - 2*libnifalcon::d*libnifalcon::e + 2*libnifalcon::a*libnifalcon::c;
+
+    double l02 = P2[2]*P2[2] + P2[0]*P2[0] + 2*libnifalcon::c*P2[0] - 2*libnifalcon::a*P2[0] + libnifalcon::a*libnifalcon::a + libnifalcon::c*libnifalcon::c - libnifalcon::d*libnifalcon::d - libnifalcon::e*libnifalcon::e - libnifalcon::b*libnifalcon::b*sin(angles.theta3[1])*sin(angles.theta3[1]) - 2*libnifalcon::b*libnifalcon::e*sin(angles.theta3[1]) - 2*libnifalcon::b*libnifalcon::d*sin(angles.theta3[1]) - 2*libnifalcon::d*libnifalcon::e - 2*libnifalcon::a*libnifalcon::c;
+    double l12 = -4*libnifalcon::a*P2[2];
+    double l22 = P2[2]*P2[2] + P2[0]*P2[0] + 2*libnifalcon::c*P2[0] + 2*libnifalcon::a*P2[0] + libnifalcon::a*libnifalcon::a + libnifalcon::c*libnifalcon::c - libnifalcon::d*libnifalcon::d - libnifalcon::e*libnifalcon::e - libnifalcon::b*libnifalcon::b*sin(angles.theta3[1])*sin(angles.theta3[1]) - 2*libnifalcon::b*libnifalcon::e*sin(angles.theta3[1]) - 2*libnifalcon::b*libnifalcon::d*sin(angles.theta3[1]) - 2*libnifalcon::d*libnifalcon::e + 2*libnifalcon::a*libnifalcon::c;
+
+    double l03 = P3[2]*P3[2] + P3[0]*P3[0] + 2*libnifalcon::c*P3[0] - 2*libnifalcon::a*P3[0] + libnifalcon::a*libnifalcon::a + libnifalcon::c*libnifalcon::c - libnifalcon::d*libnifalcon::d - libnifalcon::e*libnifalcon::e - libnifalcon::b*libnifalcon::b*sin(angles.theta3[2])*sin(angles.theta3[2]) - 2*libnifalcon::b*libnifalcon::e*sin(angles.theta3[2]) - 2*libnifalcon::b*libnifalcon::d*sin(angles.theta3[2]) - 2*libnifalcon::d*libnifalcon::e - 2*libnifalcon::a*libnifalcon::c;
+    double l13 = -4*libnifalcon::a*P3[2];
+    double l23 = P3[2]*P3[2] + P3[0]*P3[0] + 2*libnifalcon::c*P3[0] + 2*libnifalcon::a*P3[0] + libnifalcon::a*libnifalcon::a + libnifalcon::c*libnifalcon::c - libnifalcon::d*libnifalcon::d - libnifalcon::e*libnifalcon::e - libnifalcon::b*libnifalcon::b*sin(angles.theta3[2])*sin(angles.theta3[2]) - 2*libnifalcon::b*libnifalcon::e*sin(angles.theta3[2]) - 2*libnifalcon::b*libnifalcon::d*sin(angles.theta3[2]) - 2*libnifalcon::d*libnifalcon::e + 2*libnifalcon::a*libnifalcon::c;
+
+
+    double T1a = (-l11 + sqrt( l11*l11 - 4* l01* l21) ) / (2*l21);
+    double T2a = (-l12 + sqrt( l12*l12 - 4* l02* l22) ) / (2*l22);
+    double T3a = (-l13 + sqrt( l13*l13 - 4* l03* l23) ) / (2*l23);
+
+    double T1b = (-l11 - sqrt( l11*l11 - 4* l01* l21) ) / (2*l21);
+    double T2b = (-l12 - sqrt( l12*l12 - 4* l02* l22) ) / (2*l22);
+    double T3b = (-l13 - sqrt( l13*l13 - 4* l03* l23) ) / (2*l23);
+
+    angles.theta1[0] = atan(T1b)*2;
+    angles.theta1[1] = atan(T2b)*2;
+    angles.theta1[2] = atan(T3b)*2;
+    //std::cout << angles.theta1[0] << "   " << angles.theta1[1] << "  " << angles.theta1[2] << std::endl;
+
+    //And finally calculate the theta2 values:
+    angles.theta2[0] = acos( (-P1[0] + libnifalcon::a*cos(angles.theta1[0]) - libnifalcon::c)/(-libnifalcon::d - libnifalcon::e - libnifalcon::b*sin(angles.theta3[0]) )  );
+    angles.theta2[1] = acos( (-P2[0] + libnifalcon::a*cos(angles.theta1[1]) - libnifalcon::c)/(-libnifalcon::d - libnifalcon::e - libnifalcon::b*sin(angles.theta3[1]) )  );
+    angles.theta2[2] = acos( (-P3[0] + libnifalcon::a*cos(angles.theta1[2]) - libnifalcon::c)/(-libnifalcon::d - libnifalcon::e - libnifalcon::b*sin(angles.theta3[2]) )  );
+
+  // setDesAng(angles,importantAng); // save important angles from "angles" and return them to "importantAng"
 
 }

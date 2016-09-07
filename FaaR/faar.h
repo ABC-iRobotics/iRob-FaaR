@@ -119,8 +119,6 @@ private slots:
 
     void on_trajectoryPlot_clicked();
 
-    void on_makeTrajectory_clicked();
-
     void on_openLog_clicked();
 
     void on_startLogPath_clicked();

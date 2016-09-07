@@ -640,12 +640,6 @@ void MainWindow::on_ModeStartButton_clicked()
         ui->labelOperationMode->setText("Go home mode");
     }
 
-    else if (ui->posMode->isChecked())
-    {
-        falconThreads->mControl.currentState=falconThreads->mControl.followPathMode;
-        ui->labelOperationMode->setText("Follow path mode");
-    }
-
     else if(ui->replayMode->isChecked())
     {
         falconThreads->mControl.currentState=falconThreads->mControl.replayMode;
@@ -783,13 +777,6 @@ void MainWindow::on_trajectoryPlot_clicked()
     ui->trajectoryAcc->replot();
 }
 
-void MainWindow::on_makeTrajectory_clicked()
-{
-    falconThreads->mControl.trajectory.makeTrajectory();
-    falconThreads->mControl.trajectoryPath();
-    ui->posMode->setCheckable(true);
-}
-
 
 void MainWindow::on_openLog_clicked()
 {
@@ -846,6 +833,7 @@ void MainWindow::on_genTraj_clicked()
     {
         ui->genLog->append(/*QString::number(falconThreads->mControl.genTrajTh1[i]) + "       " + */QString::number(falconThreads->mControl.trajectory.genX[i]));
     }
+
 }
 
 void MainWindow::on_genNew_clicked()

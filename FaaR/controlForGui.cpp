@@ -22,13 +22,6 @@ controlForGui::controlForGui(falconData argsIn)
     mKd=argsIn.Kd;
     lowPassIsOn=argsIn.lowPassIsOn;
     dev=*argsIn.device;
-//    mPosX =&pX;
-//    mPosY =&pY;
-//    mPosZ =&pZ;
-//    mKp = &pKp;
-//    mKd = &pKd;
-//    lowPassIsOn=&plowPassIsOn;
-//    dev=device;
 
     dev.setFalconFirmware<FalconFirmwareNovintSDK>();
     init();
@@ -39,21 +32,7 @@ controlForGui::controlForGui(falconData argsIn)
 
 ///Control part
     /// Communication + Reading + Impedance
-void controlForGui::trajectoryPath()
-{   std::cout << "running" << std::endl;
-    for(int i = 0; i< trajectory.count; i++)
-    {
-        gmtl::Vec3d placeholder;
-        trajPos[0] = trajectory.x[i]; // [mm] to [m]
-        trajPos[1] = trajectory.y[i]; // [mm] to [m]
-        trajPos[2] = trajectory.z[i]; // [mm] to [m]
-        IK(trajAng, trajPos, placeholder);
-        trajTh1.push_back(trajAng.theta1[0]);
-        trajTh2.push_back(trajAng.theta1[1]);
-        trajTh3.push_back(trajAng.theta1[2]);
-    }
 
-}
 
 void controlForGui::genTrajectoryPath()
 {   std::cout << "Gentraj running" << std::endl;
@@ -69,6 +48,7 @@ void controlForGui::genTrajectoryPath()
         genTrajTh1.push_back(genTrajAng.theta1[0]);
         genTrajTh2.push_back(genTrajAng.theta1[1]);
         genTrajTh3.push_back(genTrajAng.theta1[2]);
+
     }
 
 }
@@ -153,41 +133,6 @@ void controlForGui::FalconLoop()
         PID(refAng,encoderAng);         ///  PID controller refAng -> setpoint value, encoderAng -> current value
         setLedGreen();                  ///  Set the LED on the falcon green
         FK(encoderAng);                 ///  Forward kinematics
-        break;
-    }
-    case followPathMode:
-    {
-
-        // In this mode the end-effector follows a
-        // previously defined path in maketrajectory.cpp ( circle right now )
-
-        setPid(*mKp,*mKd);              /// set PID values (Kd & Kp from GUI)
-        runIOLoop();                    ///  Exchange data with the falcon
-        read_encoder(encoderAng);       ///  Copy encoder values to "encoderAng"
-        getNextPoint(trajTh1, trajTh2, trajTh3); /// acces the next setpoint from the array that stores the path
-        FK(wayToGo,desiredOutput);      /// Forward kinematics , it's output is "desiredOutput"
-        addImpedance(desiredOutput,posWithImpedance); /// Add Positions from impedance model ,the the new setpoint position is stored in the second argument
-        IK(refPosAng,posWithImpedance,wayToGo);       /// Calculate the angles from the position of the updated setPoint value (here: posWithImpedance)
-        PID(wayToGo,encoderAng);        ///  PID controller refAng -> setpoint value, encoderAng -> current value
-        setLedGreen();                  ///  Set the LED on the falcon green
-        FK(encoderAng);                 /// Forward kinematics , it's output is the global "pos"
-
-        // ?? //
-        posx.push_back(returnpos()[0]);
-        posy.push_back(returnpos()[1]);
-        posz.push_back(returnpos()[2]);
-
-
-            // at the end of path switch back to homing mode
-        if (loopCount == trajectory.count)
-        {
-            endPos = homeAng;
-            isAtHome=true;
-            std::cout<< "Arrived!" << std::endl;
-            loopCount = 0;
-            currentState=goHomeMode;  /// state swtich -> go to home position
-            firstRun=true;
-        }
         break;
     }
     case genTrajMode:

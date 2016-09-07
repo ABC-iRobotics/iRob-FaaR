@@ -19,7 +19,21 @@
 #include <iostream>
 #include <fstream>
 
+
+#include "falcon/core/FalconDevice.h"
+#include "falcon/firmware/FalconFirmwareNovintSDK.h"
+#include "falcon/util/FalconCLIBase.h"
+#include "falcon/util/FalconFirmwareBinaryNvent.h"
+#include "falcon/kinematic/stamper/StamperUtils.h"
+#include "falcon/core/FalconGeometry.h"
+#include "falcon/gmtl/gmtl.h"
+
 #include <cmath>
+
+using namespace libnifalcon;
+using namespace std;
+using namespace StamperKinematicImpl;
+
 
 class MakeTrajectory
 {
@@ -66,6 +80,9 @@ public:
 
 
     void generateTrajectory();
+    void IK(Angle &angles, const gmtl::Vec3d &worldPosition);
+    Angle angles;
+    gmtl::Vec3d pos;
 private:
 
 };
