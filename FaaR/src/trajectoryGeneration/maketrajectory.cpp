@@ -266,11 +266,6 @@ void MakeTrajectory::makePathToHome(gmtl::Vec3d startPos)
     }
 }
 
-
-
-
-
-
 void MakeTrajectory::addPath(double x, double y, double z)
 {
     genPath->Add(KDL::Frame(KDL::Rotation::Identity(), KDL::Vector(x, y, z)));
@@ -299,10 +294,10 @@ void MakeTrajectory::generateTrajectory()
          //genPath->Add(Frame(Rotation::Identity(), Vector(0.02, 0.03, 0.130)));
          //genPath->Add(Frame(Rotation::Identity(), Vector(-0.03, -0.03, 0.110)));
 
-        for(int i = 0; i < genPoints; i++)
+        /*for(int i = 0; i < genPoints; i++)
         {   //qDebug() << genVectX[i] << "    " << genVectY[i] << "   " << genVectZ[i] << endl;
             genPath->Add(KDL::Frame(KDL::Rotation::Identity(), KDL::Vector(genVectX[i], genVectY[i], genVectZ[i])));
-        }
+        }*/
 
 
         // always call Finish() at the end, otherwise the last segment will not be added.
@@ -409,4 +404,7 @@ void MakeTrajectory::generateTrajectory()
     }
 
     std::cout << "Trajectory Generated." << std::endl;
+
+    genPath = new KDL::Path_RoundedComposite(0.0001 ,0.0001, new KDL::RotationalInterpolation_SingleAxis());
+
 }

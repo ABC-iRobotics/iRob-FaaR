@@ -823,15 +823,15 @@ void MainWindow::on_stopLogging_clicked()
 
 void MainWindow::on_addPath_clicked()
 {
-    genX = ui->pathX->text().toDouble();
+    genX = ui->pathX->text().toDouble(); // kiolvas és konvertál doublebe
     genY = ui->pathY->text().toDouble();
     genZ = ui->pathZ->text().toDouble();
-    stringx = QString::number(genX);
+    stringx = QString::number(genX);     // kiiráshoz
     stringy = QString::number(genY);
     stringz = QString::number(genZ);
     ui->console->append(QString::number(genCount) + "." + "    x: " + stringx + "     y: " + stringy + "    z: " + stringz);
-    //falconThreads->mControl.trajectory.addPath(genX, genY, genZ);
-    falconThreads->mControl.trajectory.genPoints = genCount;
+    falconThreads->mControl.trajectory.addPath(genX, genY, genZ);
+    falconThreads->mControl.trajectory.genPoints = genCount;  //
     qDebug() << "genCount: " << falconThreads->mControl.trajectory.genPoints << endl;
     falconThreads->mControl.trajectory.genVectX.push_back(genX);
     falconThreads->mControl.trajectory.genVectY.push_back(genY);
