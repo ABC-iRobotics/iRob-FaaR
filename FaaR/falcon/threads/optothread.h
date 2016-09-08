@@ -42,4 +42,19 @@ signals:
 //    void sensorStopped();
 };
 
+
+class labelUpdate : public QThread
+{
+    Q_OBJECT
+public:
+    explicit labelUpdate(QObject *parent = 0);
+    void run();
+
+
+signals:
+    void updateSignal();
+
+};
+
+
 #endif // OPTOTHREAD_H

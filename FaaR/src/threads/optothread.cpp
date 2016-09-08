@@ -133,3 +133,17 @@ reset=false;
 
 
 }
+
+labelUpdate::labelUpdate(QObject *parent):QThread(parent)
+{
+}
+
+
+void labelUpdate::run()
+{
+while(1)
+{
+    emit updateSignal();
+    usleep(25000);
+}
+}
