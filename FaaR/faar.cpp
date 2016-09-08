@@ -805,6 +805,22 @@ void MainWindow::on_stopLogging_clicked()
     falconThreads->mControl.resetFirstRun();
     std::cout<< "[Logging path ended]"<<std::endl;
 
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
+                               "./Logs/LogFile",
+                               tr("Log Files (*.dat)"));
+    fileName.append(".dat");
+    qDebug()<< fileName;
+
+   bool succesfulCopy = QFile::copy("./Logs/log.dat", fileName);
+   if (succesfulCopy)
+   {
+       qDebug() << "file saved to: " + fileName;
+   }
+   else
+   {
+       qDebug() << "the file coudnt be saved ,but the temporary file can be found with the data (log.dat) ";
+   }
+
 
 }
 
