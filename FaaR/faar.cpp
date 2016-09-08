@@ -383,14 +383,21 @@ void MainWindow::on_stopLogging_clicked()
     falconThreads->mControl.currentState=falconThreads->mControl.goHomeMode;
     falconThreads->mControl.resetFirstRun();
     std::cout<< "[Logging path ended]"<<std::endl;
-
+    ///check that the log directory is existing
+    QDir dir(".");
+    QDir logPath("./Logs/teachmode");
+    if(!logPath.exists())
+    {
+        dir.mkpath("./Logs/teachmode");
+    }
+    ///
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
-                               "./Logs/LogFile",
+                               "./Logs/teachmode",
                                tr("Log Files (*.dat)"));
     fileName.append(".dat");
     qDebug()<< fileName;
 
-   bool succesfulCopy = QFile::copy("./Logs/log.dat", fileName);
+   bool succesfulCopy = QFile::copy("./log.dat", fileName);
    if (succesfulCopy)
    {
        qDebug() << "file saved to: " + fileName;

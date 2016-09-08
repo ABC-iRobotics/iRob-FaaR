@@ -320,13 +320,14 @@ void MakeTrajectory::generateTrajectory()
 
         // use the trajectory
         double dt=0.001;
+        ///check that the log directory is existing
         QDir dir(".");
         QDir logPath("./Logs/generated");
-        std::cout << dir.currentPath().toStdString() << std::endl;
         if(!logPath.exists())
         {
             dir.mkpath("./Logs/generated");
         }
+        ///
         time = QDateTime::currentDateTime().toString("yyyy-MM-dd-hh:mm:ss"); // time for filename
         QFile myFile("./Logs/generated/" + time + ".dat"); // create log file with current date name
         myFile.open(QFile::WriteOnly | QFile::ReadOnly | QFile::Text); // open log file
