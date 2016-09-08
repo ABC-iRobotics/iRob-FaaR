@@ -34,7 +34,7 @@ void::MainWindow::onXchange(double kord)
 QMutex mx;
 mx.lock();
 falconThreads->posX = kord;
-ui->sensorX->setText(QString::number(kord));
+ui->sensorX->setText(QString::number(kord,'f',4));
 mx.unlock();
 
 }
@@ -44,7 +44,7 @@ void::MainWindow::onYchange(double kord)
 QMutex my;
 my.lock();
 falconThreads->posY = kord;
-ui->sensorY->setText(QString::number(kord));
+ui->sensorY->setText(QString::number(kord,'f',4));
 my.unlock();
 
 }
@@ -54,7 +54,7 @@ void::MainWindow::onZchange(double kord)
 QMutex mz;
 mz.lock();
 falconThreads->posZ = kord;
-ui->sensorZ->setText(QString::number(kord));
+ui->sensorZ->setText(QString::number(kord,'f',4));
 mz.unlock();
 }
 void::MainWindow::sensorConfigStatus(bool status)
@@ -433,9 +433,10 @@ void MainWindow::on_addPath_clicked()
 void MainWindow::on_genTraj_clicked()
 {
     falconThreads->mControl.trajectory.generateTrajectory();
+    ui->genLog->append("x[m]:                 y[m]:                   z[m]:                 ");
     for(int i = 0; i < falconThreads->mControl.trajectory.genCount; i++)
     {
-        ui->genLog->append(/*QString::number(falconThreads->mControl.genTrajTh1[i]) + "       " + */QString::number(falconThreads->mControl.trajectory.genX[i]));
+        ui->genLog->append(QString::number(falconThreads->mControl.trajectory.genX[i]) + "               " + QString::number(falconThreads->mControl.trajectory.genY[i]) + "                 " + QString::number(falconThreads->mControl.trajectory.genZ[i]));
     }
 
 }
