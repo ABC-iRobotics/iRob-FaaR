@@ -18,6 +18,11 @@
 #include <QDebug>
 #include <iostream>
 #include <fstream>
+#include <QString>
+#include <QDateTime>
+#include <QFile>
+#include <QTextStream>
+#include <QDir>
 
 
 #include "falcon/core/FalconDevice.h"
@@ -71,6 +76,8 @@ public:
     int genPoints;
     void addPath(double x, double y, double z);
 
+
+    QString time;
 
 
 
