@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     falconThreads = new FalconThreads;
     oThread= new OptoThread(this);
+    labelUpdateThread = new labelUpdate(this);
 
     connect(oThread,SIGNAL(xkord(double)),this,SLOT(onXchange(double)));
     connect(oThread,SIGNAL(ykord(double)),this,SLOT(onYchange(double)));
@@ -15,8 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(oThread,SIGNAL(configSet(bool)),this,SLOT(sensorConfigStatus(bool)));
     connect(oThread,SIGNAL(offsetSet(bool)),this,SLOT(offssetStatus(bool)));
 
+    connect(labelUpdateThread,SIGNAL(updateSignal()),this,SLOT(slotToUpdateLabel()));
 
 
+posShowPauseIsOn == true;
 }
 
 MainWindow::~MainWindow()
@@ -115,6 +118,7 @@ void MainWindow::on_startThreads_clicked()
          ui->ThreadFeedback->setText("ON");
         ui->ThreadFeedback->setStyleSheet("background-color: green");
         ui->labelThreadFeedback->setText("Thread running");
+        labelUpdateThread->start();
     }
 }
 void MainWindow::on_stopThreads_clicked()
@@ -484,5 +488,34 @@ void MainWindow::on_FalconFeedback_clicked()
         msgBox.exec();
         isFalconReady = false;
     }
+
+
 }
 
+
+void MainWindow::on_buttonFalconShowCoords_clicked()
+{
+    if (posShowPauseIsOn==false)
+    { posShowPauseIsOn = true; }
+    if (posShowPauseIsOn == true)
+    { posShowPauseIsOn= false;}
+
+}
+
+
+void MainWindow::slotToUpdateLabel()
+{
+
+if (!posShowPauseIsOn)
+    {
+        double xPos = falconThreads->mControl.returnpos()[0];
+        double yPos = falconThreads->mControl.returnpos()[1];
+        double zPos = falconThreads->mControl.returnpos()[2];
+        QString xPosstr = QString::number(xPos,'f',6);
+        QString yPosstr = QString::number(yPos,'f',6);
+        QString zPosstr = QString::number(zPos,'f',6);
+        ui->labelFalconXpos->setText(xPosstr);
+        ui->labelFalconYpos->setText(yPosstr);
+        ui->labelFalconZpos->setText(zPosstr);
+    }
+}

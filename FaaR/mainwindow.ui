@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>843</width>
-    <height>667</height>
+    <width>898</width>
+    <height>693</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -246,6 +246,15 @@ QDoubleSpinBox {
               <widget class="QPushButton" name="SensoFeedback">
                <property name="text">
                 <string/>
+               </property>
+               <property name="autoRepeat">
+                <bool>true</bool>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+               <property name="autoRepeatDelay">
+                <number>1000</number>
                </property>
               </widget>
              </item>
@@ -678,15 +687,21 @@ QDoubleSpinBox {
              <item>
               <widget class="QGroupBox" name="groupBox_2">
                <property name="title">
-                <string>Impedance Model Values</string>
+                <string>Impedance Model Values             //         Falcon TCP position</string>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_13">
                 <item>
                  <layout class="QGridLayout" name="ImpedancemodelAll">
                   <item row="2" column="0">
                    <widget class="QPushButton" name="resetPosAndVel">
+                    <property name="maximumSize">
+                     <size>
+                      <width>250</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
                     <property name="text">
-                     <string>Reset sensor and set Homing mode</string>
+                     <string>Reset Model</string>
                     </property>
                    </widget>
                   </item>
@@ -711,6 +726,12 @@ QDoubleSpinBox {
                      <layout class="QHBoxLayout" name="impModLabel">
                       <item>
                        <widget class="QLabel" name="label_4">
+                        <property name="maximumSize">
+                         <size>
+                          <width>80</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
                         <property name="text">
                          <string>X [m]:</string>
                         </property>
@@ -721,6 +742,12 @@ QDoubleSpinBox {
                       </item>
                       <item>
                        <widget class="QLabel" name="label_12">
+                        <property name="maximumSize">
+                         <size>
+                          <width>80</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
                         <property name="text">
                          <string>Y [m]:</string>
                         </property>
@@ -734,6 +761,12 @@ QDoubleSpinBox {
                       </item>
                       <item>
                        <widget class="QLabel" name="label_13">
+                        <property name="maximumSize">
+                         <size>
+                          <width>80</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
                         <property name="text">
                          <string>Z [m]:</string>
                         </property>
@@ -748,6 +781,12 @@ QDoubleSpinBox {
                      <layout class="QHBoxLayout" name="impModCoords">
                       <item>
                        <widget class="QLabel" name="sensorX">
+                        <property name="maximumSize">
+                         <size>
+                          <width>80</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
                         <property name="text">
                          <string>0</string>
                         </property>
@@ -758,6 +797,12 @@ QDoubleSpinBox {
                       </item>
                       <item>
                        <widget class="QLabel" name="sensorY">
+                        <property name="maximumSize">
+                         <size>
+                          <width>80</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
                         <property name="text">
                          <string>0</string>
                         </property>
@@ -768,6 +813,12 @@ QDoubleSpinBox {
                       </item>
                       <item>
                        <widget class="QLabel" name="sensorZ">
+                        <property name="maximumSize">
+                         <size>
+                          <width>80</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
                         <property name="text">
                          <string>0</string>
                         </property>
@@ -781,17 +832,128 @@ QDoubleSpinBox {
                    </layout>
                   </item>
                   <item row="1" column="1">
-                   <spacer name="horizontalSpacer_2">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
+                   <layout class="QVBoxLayout" name="verticalLayout_12">
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_7">
+                      <item>
+                       <widget class="QLabel" name="label_19">
+                        <property name="maximumSize">
+                         <size>
+                          <width>80</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>X[m]</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="label_20">
+                        <property name="maximumSize">
+                         <size>
+                          <width>80</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>Y[m]</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="label_21">
+                        <property name="maximumSize">
+                         <size>
+                          <width>80</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>Z[m]</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_4">
+                      <item>
+                       <widget class="QLabel" name="labelFalconXpos">
+                        <property name="maximumSize">
+                         <size>
+                          <width>80</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>0</string>
+                        </property>
+                        <property name="textFormat">
+                         <enum>Qt::AutoText</enum>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="labelFalconYpos">
+                        <property name="maximumSize">
+                         <size>
+                          <width>80</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>0</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="labelFalconZpos">
+                        <property name="maximumSize">
+                         <size>
+                          <width>80</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>0</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="QPushButton" name="buttonFalconShowCoords">
+                    <property name="maximumSize">
                      <size>
-                      <width>40</width>
-                      <height>20</height>
+                      <width>250</width>
+                      <height>16777215</height>
                      </size>
                     </property>
-                   </spacer>
+                    <property name="text">
+                     <string>Start show</string>
+                    </property>
+                   </widget>
                   </item>
                  </layout>
                 </item>
@@ -1090,8 +1252,8 @@ QDoubleSpinBox {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>801</width>
-             <height>541</height>
+             <width>856</width>
+             <height>567</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -2032,7 +2194,7 @@ QDoubleSpinBox {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>843</width>
+     <width>898</width>
      <height>20</height>
     </rect>
    </property>

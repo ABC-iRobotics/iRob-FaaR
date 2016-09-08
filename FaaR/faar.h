@@ -28,6 +28,7 @@ public:
     QMessageBox showMessage;
     FalconThreads *falconThreads;
     OptoThread *oThread;
+    labelUpdate *labelUpdateThread;
     QTimer dataTimer;
     bool stopPlot;
     bool startPlot;
@@ -65,16 +66,15 @@ public slots:
     void onXchange(double);
     void onYchange(double);
     void onZchange(double);
-//    void sensorInited();
-//    void sensorConnectionFailed();
-//    void sensorSetupDone();
-//    void sensorRunStopped();
+
     void encoderplot1();
     void encoderplot2();
     void encoderplot3();
 
     void sensorConfigStatus(bool);
     void offssetStatus(bool);
+
+    void slotToUpdateLabel();
 
 private slots:
 
@@ -139,6 +139,9 @@ private slots:
 
     void on_FalconFeedback_clicked();
 
+    void on_buttonFalconShowCoords_clicked();
+
+
 private:
 
     double key;
@@ -148,6 +151,7 @@ private:
     int threadsStarted = 0;
     int sensorStarted = 0;
     int falconStarted = 0;
+    bool posShowPauseIsOn;
 };
 
 #endif // MAINWINDOW_H
