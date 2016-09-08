@@ -12,6 +12,7 @@
 #include <fstream>
 #include <QFileDialog>
 #include <falconDataStruct.h>
+#include <QDir>
 
 namespace Ui {
 class MainWindow;

@@ -44,7 +44,7 @@ class MakeTrajectory
 {
 
 public:
-    KDL::Path_RoundedComposite* genPath = new KDL::Path_RoundedComposite(0.0001 ,0.0001, new KDL::RotationalInterpolation_SingleAxis());
+    KDL::Path_RoundedComposite* genPath = new KDL::Path_RoundedComposite(0.001 ,0.0001, new KDL::RotationalInterpolation_SingleAxis());
     MakeTrajectory();
     std::vector<double> x;
     std::vector<double> y;

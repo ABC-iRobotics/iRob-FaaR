@@ -299,13 +299,29 @@ void MakeTrajectory::generateTrajectory()
             genPath->Add(KDL::Frame(KDL::Rotation::Identity(), KDL::Vector(genVectX[i], genVectY[i], genVectZ[i])));
         }*/
 
+        ///cross lines and circle test
+        /*
+        genPath->Add(Frame(Rotation::Identity(),Vector(0,0,0.120)));
+        genPath->Add(Frame(Rotation::Identity(),Vector(0,-0.0299,0.09)));
+        genPath->Add(Frame(Rotation::Identity(),Vector(0,-0.0299,0.16)));
+        genPath->Add(Frame(Rotation::Identity(),Vector(0,0,0.120)));
+        genPath->Add(Frame(Rotation::Identity(),Vector(0.04,0,0.120)));
+        genPath->Add(Frame(Rotation::Identity(),Vector(0.04,-0.0299,0.120)));
+        genPath->Add(Frame(Rotation::Identity(),Vector(-0.04,-0.0299,0.120)));
+        genPath->Add(Frame(Rotation::Identity(),Vector(-0.04,0,0.120)));
+        ///Circle
+        for(int i = 0; i < 72; i++)
+        {
+            genPath->Add(Frame(Rotation::Identity(),Vector(0.02*sin(3.14/10*i),-0.0299,0.120+0.02*cos(3.14/10*i))));
+        }*/
+        ///
 
         // always call Finish() at the end, otherwise the last segment will not be added.
         genPath->Finish();
 
         // Trajectory defines a motion of the robot along a path.
         // This defines a trapezoidal velocity profile.
-        VelocityProfile* velpref = new VelocityProfile_Trap(0.2,0.02);
+        VelocityProfile* velpref = new VelocityProfile_Trap(0.07,0.009);
         std::cout << "Path length: " << genPath->PathLength() << std::endl;
         velpref->SetProfile(0,genPath->PathLength());
         Trajectory* traject = new Trajectory_Segment(genPath, velpref);
@@ -320,13 +336,14 @@ void MakeTrajectory::generateTrajectory()
 
         // use the trajectory
         double dt=0.001;
+        ///check that the log directory is existing
         QDir dir(".");
         QDir logPath("./Logs/generated");
-        std::cout << dir.currentPath().toStdString() << std::endl;
         if(!logPath.exists())
         {
             dir.mkpath("./Logs/generated");
         }
+        ///
         time = QDateTime::currentDateTime().toString("yyyy-MM-dd-hh:mm:ss"); // time for filename
         QFile myFile("./Logs/generated/" + time + ".dat"); // create log file with current date name
         myFile.open(QFile::WriteOnly | QFile::ReadOnly | QFile::Text); // open log file

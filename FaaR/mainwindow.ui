@@ -179,7 +179,7 @@ QDoubleSpinBox {
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -1107,9 +1107,15 @@ QDoubleSpinBox {
                      <layout class="QHBoxLayout" name="impModCoords">
                       <item>
                        <widget class="QLabel" name="sensorX">
+                        <property name="minimumSize">
+                         <size>
+                          <width>60</width>
+                          <height>0</height>
+                         </size>
+                        </property>
                         <property name="maximumSize">
                          <size>
-                          <width>80</width>
+                          <width>60</width>
                           <height>16777215</height>
                          </size>
                         </property>
@@ -1123,9 +1129,15 @@ QDoubleSpinBox {
                       </item>
                       <item>
                        <widget class="QLabel" name="sensorY">
+                        <property name="minimumSize">
+                         <size>
+                          <width>60</width>
+                          <height>0</height>
+                         </size>
+                        </property>
                         <property name="maximumSize">
                          <size>
-                          <width>80</width>
+                          <width>60</width>
                           <height>16777215</height>
                          </size>
                         </property>
@@ -1139,9 +1151,15 @@ QDoubleSpinBox {
                       </item>
                       <item>
                        <widget class="QLabel" name="sensorZ">
+                        <property name="minimumSize">
+                         <size>
+                          <width>60</width>
+                          <height>0</height>
+                         </size>
+                        </property>
                         <property name="maximumSize">
                          <size>
-                          <width>80</width>
+                          <width>60</width>
                           <height>16777215</height>
                          </size>
                         </property>
@@ -1157,7 +1175,7 @@ QDoubleSpinBox {
                     </item>
                    </layout>
                   </item>
-                  <item row="1" column="1">
+                  <item row="1" column="2">
                    <layout class="QVBoxLayout" name="verticalLayout_12">
                     <item>
                      <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -1215,9 +1233,15 @@ QDoubleSpinBox {
                      <layout class="QHBoxLayout" name="horizontalLayout_4">
                       <item>
                        <widget class="QLabel" name="labelFalconXpos">
+                        <property name="minimumSize">
+                         <size>
+                          <width>60</width>
+                          <height>0</height>
+                         </size>
+                        </property>
                         <property name="maximumSize">
                          <size>
-                          <width>80</width>
+                          <width>60</width>
                           <height>16777215</height>
                          </size>
                         </property>
@@ -1234,9 +1258,15 @@ QDoubleSpinBox {
                       </item>
                       <item>
                        <widget class="QLabel" name="labelFalconYpos">
+                        <property name="minimumSize">
+                         <size>
+                          <width>60</width>
+                          <height>0</height>
+                         </size>
+                        </property>
                         <property name="maximumSize">
                          <size>
-                          <width>80</width>
+                          <width>60</width>
                           <height>16777215</height>
                          </size>
                         </property>
@@ -1250,9 +1280,15 @@ QDoubleSpinBox {
                       </item>
                       <item>
                        <widget class="QLabel" name="labelFalconZpos">
+                        <property name="minimumSize">
+                         <size>
+                          <width>60</width>
+                          <height>0</height>
+                         </size>
+                        </property>
                         <property name="maximumSize">
                          <size>
-                          <width>80</width>
+                          <width>60</width>
                           <height>16777215</height>
                          </size>
                         </property>
@@ -1268,7 +1304,7 @@ QDoubleSpinBox {
                     </item>
                    </layout>
                   </item>
-                  <item row="2" column="1">
+                  <item row="2" column="2">
                    <widget class="QPushButton" name="buttonFalconShowCoords">
                     <property name="maximumSize">
                      <size>
@@ -1280,6 +1316,19 @@ QDoubleSpinBox {
                      <string>Start show</string>
                     </property>
                    </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <spacer name="horizontalSpacer_2">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
                   </item>
                  </layout>
                 </item>
@@ -2063,9 +2112,15 @@ QDoubleSpinBox {
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
          <widget class="QTextBrowser" name="genLog">
+          <property name="minimumSize">
+           <size>
+            <width>500</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
-            <width>400</width>
+            <width>600</width>
             <height>300</height>
            </size>
           </property>
@@ -2075,7 +2130,7 @@ QDoubleSpinBox {
          <widget class="QTextBrowser" name="console">
           <property name="maximumSize">
            <size>
-            <width>400</width>
+            <width>600</width>
             <height>300</height>
            </size>
           </property>
