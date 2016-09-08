@@ -18,6 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(labelUpdateThread,SIGNAL(updateSignal()),this,SLOT(slotToUpdateLabel()));
 
+addPos[0]=0;
+addPos[1]=0;
+addPos[2]=0.12;
 
 posShowPauseIsOn == true;
 }
@@ -241,127 +244,12 @@ void MainWindow::on_ModeStartButton_clicked()
         falconThreads->mControl.currentState=falconThreads->mControl.replayMode;
         ui->labelOperationMode->setText("Replay mode");
     }
-}
-void MainWindow::on_trajectoryPlot_clicked()
-{
-    size = falconThreads->mControl.trajectory.count;
-    //std::cout << "Sample size: " << size << std::endl;
-    QVector<double> n(size), vel1(size), vel21(size), vel22(size),  vel31(size),  vel32(size), vel2(size), vel3(size), vx(size), vy(size), vz(size) , ax(size), ay(size), az(size);
-    for (int i=0; i<size; ++i)
+    else if(ui->navMode->isChecked())
     {
-      n[i] = falconThreads->mControl.trajectory.n[i];
-      //px[i] = falconThreads->mControl.trajectory.x[i];
-      //py[i] = falconThreads->mControl.posx[i];
-      //py[i] = falconThreads->mControl.trajectory.y[i];
-      //pz[i] = falconThreads->mControl.trajectory.z[i];
-      vx[i] = falconThreads->mControl.trajectory.vx[i];
-      vy[i] = falconThreads->mControl.trajectory.vy[i];
-      vz[i] = falconThreads->mControl.trajectory.vz[i];
-      ax[i] = falconThreads->mControl.trajectory.ax[i];
-      ay[i] = falconThreads->mControl.trajectory.ay[i];
-      az[i] = falconThreads->mControl.trajectory.az[i];
-      switch(ui->trajPlot1List->currentRow())
-      {
-          case 0:
-            vel1[i] = falconThreads->mControl.trajectory.x[i];
-            vel2[i] = falconThreads->mControl.posx[i];
-            //ui->trajectoryPos->graph(0)->setName("trajectory x");
-            //ui->trajectoryPos->graph(1)->setName("robot x");
-            break;
-          case 1:
-            vel1[i] = falconThreads->mControl.trajectory.y[i];
-            vel2[i] = falconThreads->mControl.posy[i];
-            //ui->trajectoryPos->graph(0)->setName("trajectory y");
-            //ui->trajectoryPos->graph(1)->setName("robot y");
-            break;
-          case 2:
-            vel1[i] = falconThreads->mControl.trajectory.z[i];
-            vel2[i] = falconThreads->mControl.posz[i];
-            //ui->trajectoryPos->graph(0)->setName("trajectory z");
-            //ui->trajectoryPos->graph(1)->setName("robot z");
-            break;
-      }
-      switch(ui->trajPlot2List->currentRow())
-      {
-          case 0:
-            vel21[i] = falconThreads->mControl.trajectory.x[i];
-            vel22[i] = falconThreads->mControl.posx[i];
-            break;
-          case 1:
-            vel21[i] = falconThreads->mControl.trajectory.y[i];
-            vel22[i] = falconThreads->mControl.posy[i];
-            break;
-          case 2:
-            vel21[i] = falconThreads->mControl.trajectory.z[i];
-            vel22[i] = falconThreads->mControl.posz[i];
-            break;
-      }
-      switch(ui->trajPlot3List->currentRow())
-      {
-          case 0:
-            vel31[i] = falconThreads->mControl.trajectory.x[i];
-            vel32[i] = falconThreads->mControl.posx[i];
-            break;
-          case 1:
-            vel31[i] = falconThreads->mControl.trajectory.y[i];
-            vel32[i] = falconThreads->mControl.posy[i];
-            break;
-          case 2:
-            vel31[i] = falconThreads->mControl.trajectory.z[i];
-            vel32[i] = falconThreads->mControl.posz[i];
-            break;
-      }
-
+        falconThreads->mControl.currentState=falconThreads->mControl.navMode;
+        ui->labelOperationMode->setText("Navigaton mode");
     }
 
-    ///Plot trajectory position
-    // create graph and assign data to it:
-    ui->trajectoryPos->addGraph();
-    ui->trajectoryPos->graph(0)->setData(n, vel1);
-    ui->trajectoryPos->graph(0)->setName("trajectory x");
-    ui->trajectoryPos->addGraph();
-    ui->trajectoryPos->graph(1)->setData(n, vel2);
-    ui->trajectoryPos->graph(1)->setPen(QPen(Qt::red));
-    ui->trajectoryPos->addGraph();
-    ui->trajectoryPos->graph(2)->setData(n, vel3);
-    ui->trajectoryPos->graph(2)->setPen(QPen(Qt::green));
-    // give the axes some labels:
-    ui->trajectoryPos->xAxis->setLabel("n");
-    ui->trajectoryPos->yAxis->setLabel("p [mm]");
-    ui->trajectoryPos->rescaleAxes();
-    ui->trajectoryPos->replot();
-
-    ///Plot trajectory Velocity
-    // create graph and assign data to it:
-    ui->trajectoryVel->addGraph();
-    ui->trajectoryVel->graph(0)->setData(n, vel21);
-    ui->trajectoryVel->addGraph();
-    ui->trajectoryVel->graph(1)->setData(n, vel22);
-    ui->trajectoryVel->graph(1)->setPen(QPen(Qt::red));
-    ui->trajectoryVel->addGraph();
-    ui->trajectoryVel->graph(2)->setData(n, vel3);
-    ui->trajectoryVel->graph(2)->setPen(QPen(Qt::green));
-    // give the axes some labels:
-    ui->trajectoryVel->xAxis->setLabel("n");
-    ui->trajectoryVel->yAxis->setLabel("v [mm/s]");
-    ui->trajectoryVel->rescaleAxes();
-    ui->trajectoryVel->replot();
-
-    ///Plot trajectory Acceleration
-    // create graph and assign data to it:
-    ui->trajectoryAcc->addGraph();
-    ui->trajectoryAcc->graph(0)->setData(n, vel31);
-    ui->trajectoryAcc->addGraph();
-    ui->trajectoryAcc->graph(1)->setData(n, vel32);
-    ui->trajectoryAcc->graph(1)->setPen(QPen(Qt::red));
-    ui->trajectoryAcc->addGraph();
-    ui->trajectoryAcc->graph(2)->setData(n, vel3);
-    ui->trajectoryAcc->graph(2)->setPen(QPen(Qt::green));
-    // give the axes some labels:
-    ui->trajectoryAcc->xAxis->setLabel("n");
-    ui->trajectoryAcc->yAxis->setLabel("v [mm/s^2]");
-    ui->trajectoryAcc->rescaleAxes();
-    ui->trajectoryAcc->replot();
 }
 void MainWindow::on_openLog_clicked()
 {
@@ -511,4 +399,70 @@ if (!posShowPauseIsOn)
         ui->labelFalconYpos->setText(yPosstr);
         ui->labelFalconZpos->setText(zPosstr);
     }
+}
+
+void MainWindow::on_btnXdec_clicked()
+{
+    addPos[0]-=0.0001;
+    falconThreads->mControl.navPos[0]=addPos[0];
+    QString navX = QString::number(addPos[0]);
+    QString navY = QString::number(addPos[1]);
+    QString navZ = QString::number(addPos[2]);
+    QString full = QString("%1 // %2 // %3").arg(navX).arg(navY).arg(navZ);
+    ui->labelNav->setText(full);
+}
+
+void MainWindow::on_btnXinc_clicked()
+{
+    addPos[0]+=0.0001;
+    falconThreads->mControl.navPos[0]=addPos[0];
+    QString navX = QString::number(addPos[0]);
+    QString navY = QString::number(addPos[1]);
+    QString navZ = QString::number(addPos[2]);
+    QString full = QString("%1 // %2 // %3").arg(navX).arg(navY).arg(navZ);
+    ui->labelNav->setText(full);
+}
+
+void MainWindow::on_btnYinc_clicked()
+{
+    addPos[1]+=0.0001;
+    falconThreads->mControl.navPos[1]=addPos[1];
+    QString navX = QString::number(addPos[0]);
+    QString navY = QString::number(addPos[1]);
+    QString navZ = QString::number(addPos[2]);
+    QString full = QString("%1 // %2 // %3").arg(navX).arg(navY).arg(navZ);
+    ui->labelNav->setText(full);
+}
+
+void MainWindow::on_btnYdec_clicked()
+{
+    addPos[1]-=0.0001;
+    falconThreads->mControl.navPos[1]=addPos[1];
+    QString navX = QString::number(addPos[0]);
+    QString navY = QString::number(addPos[1]);
+    QString navZ = QString::number(addPos[2]);
+    QString full = QString("%1 // %2 // %3").arg(navX).arg(navY).arg(navZ);
+    ui->labelNav->setText(full);
+}
+
+void MainWindow::on_btnZinc_clicked()
+{
+    addPos[2]+=0.0001;
+    falconThreads->mControl.navPos[2]=addPos[2];
+    QString navX = QString::number(addPos[0]);
+    QString navY = QString::number(addPos[1]);
+    QString navZ = QString::number(addPos[2]);
+    QString full = QString("%1 // %2 // %3").arg(navX).arg(navY).arg(navZ);
+    ui->labelNav->setText(full);
+}
+
+void MainWindow::on_btnZdec_clicked()
+{
+    addPos[2]-=0.0001;
+    falconThreads->mControl.navPos[2]=addPos[2];
+    QString navX = QString::number(addPos[0]);
+    QString navY = QString::number(addPos[1]);
+    QString navZ = QString::number(addPos[2]);
+    QString full = QString("%1 // %2 // %3").arg(navX).arg(navY).arg(navZ);
+    ui->labelNav->setText(full);
 }

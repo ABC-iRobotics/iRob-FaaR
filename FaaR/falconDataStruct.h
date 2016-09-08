@@ -25,6 +25,11 @@ struct falconData{
     double *posY;
     double *posZ;
 
+/// Button navigation ///
+
+    gmtl::Vec3d* navPos;
+
+
  /// PID ///
     double *Kp;
     double *Kd;

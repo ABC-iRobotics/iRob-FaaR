@@ -99,7 +99,7 @@ public:
     bool isFirmWareLoaded();
 
 /// Some public variables for easier access -> should write accessor / modifier functions and move theese to private later.
-    enum State { goHomeMode, stayMode , followPathMode, logPathMode, replayMode, genTrajMode }; State currentState;
+    enum State { goHomeMode, stayMode , logPathMode, replayMode, navMode }; State currentState;
 
     double time;
     int replayCount ;
@@ -112,6 +112,8 @@ public:
     gmtl::Vec3d trajPos;
     gmtl::Vec3d trajTh;
     gmtl::Vec3d genTrajPos;
+
+    gmtl::Vec3d navPos;
 
     std::vector<double> genTrajTh1;
     std::vector<double> genTrajTh2;
@@ -132,6 +134,7 @@ public:
    falconData args;
 
 
+   gmtl::Vec3d addNavPos(gmtl::Vec3d setPointPos);
 private:
     /// Accessing falcon communication :
     boost::shared_ptr<FalconFirmware> f;

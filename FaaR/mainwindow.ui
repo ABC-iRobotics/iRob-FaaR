@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>898</width>
-    <height>693</height>
+    <width>978</width>
+    <height>822</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -432,6 +432,297 @@ QDoubleSpinBox {
           </layout>
          </widget>
         </item>
+        <item row="1" column="0">
+         <widget class="QFrame" name="frame_3">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QGroupBox" name="groupBox_3">
+             <property name="title">
+              <string>Path logging</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_12">
+              <item row="4" column="0">
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="0" column="0">
+               <layout class="QVBoxLayout" name="verticalLayout_14">
+                <item>
+                 <widget class="QPushButton" name="startLogPath">
+                  <property name="text">
+                   <string>Log Path</string>
+                  </property>
+                  <property name="default">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="stopLogging">
+                  <property name="text">
+                   <string>Stop Logging</string>
+                  </property>
+                  <property name="autoDefault">
+                   <bool>false</bool>
+                  </property>
+                  <property name="default">
+                   <bool>true</bool>
+                  </property>
+                  <property name="flat">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="openLog">
+                  <property name="text">
+                   <string>Open existing log</string>
+                  </property>
+                  <property name="default">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <spacer name="verticalSpacer_3">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="2" column="0">
+               <layout class="QVBoxLayout" name="verticalLayout_23">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_9">
+                  <item>
+                   <widget class="QPushButton" name="btnXdec">
+                    <property name="text">
+                     <string>X-</string>
+                    </property>
+                    <property name="autoRepeat">
+                     <bool>true</bool>
+                    </property>
+                    <property name="autoRepeatDelay">
+                     <number>30</number>
+                    </property>
+                    <property name="autoRepeatInterval">
+                     <number>50</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnXinc">
+                    <property name="text">
+                     <string>X+</string>
+                    </property>
+                    <property name="autoRepeat">
+                     <bool>true</bool>
+                    </property>
+                    <property name="autoRepeatDelay">
+                     <number>150</number>
+                    </property>
+                    <property name="autoRepeatInterval">
+                     <number>50</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_10">
+                  <item>
+                   <layout class="QVBoxLayout" name="verticalLayout_21">
+                    <item>
+                     <widget class="QPushButton" name="btnYinc">
+                      <property name="minimumSize">
+                       <size>
+                        <width>92</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>Y+</string>
+                      </property>
+                      <property name="autoRepeat">
+                       <bool>true</bool>
+                      </property>
+                      <property name="autoRepeatDelay">
+                       <number>30</number>
+                      </property>
+                      <property name="autoRepeatInterval">
+                       <number>50</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="btnYdec">
+                      <property name="minimumSize">
+                       <size>
+                        <width>92</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>Y-</string>
+                      </property>
+                      <property name="autoRepeat">
+                       <bool>true</bool>
+                      </property>
+                      <property name="autoRepeatDelay">
+                       <number>30</number>
+                      </property>
+                      <property name="autoRepeatInterval">
+                       <number>50</number>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QVBoxLayout" name="verticalLayout_22">
+                    <item>
+                     <widget class="QPushButton" name="btnZinc">
+                      <property name="text">
+                       <string>Z+</string>
+                      </property>
+                      <property name="autoRepeat">
+                       <bool>true</bool>
+                      </property>
+                      <property name="autoRepeatDelay">
+                       <number>30</number>
+                      </property>
+                      <property name="autoRepeatInterval">
+                       <number>50</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="btnZdec">
+                      <property name="text">
+                       <string>Z-</string>
+                      </property>
+                      <property name="autoRepeat">
+                       <bool>true</bool>
+                      </property>
+                      <property name="autoRepeatDelay">
+                       <number>30</number>
+                      </property>
+                      <property name="autoRepeatInterval">
+                       <number>50</number>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="labelNav">
+                <property name="text">
+                 <string> 0 / 0 / 0.12</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_4">
+             <property name="title">
+              <string>Operating Modes</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_15">
+              <item>
+               <widget class="QRadioButton" name="goHomeMode">
+                <property name="text">
+                 <string>Go Home</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="centerMode">
+                <property name="text">
+                 <string>Stay Center</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="replayMode">
+                <property name="text">
+                 <string>Replay trajectory</string>
+                </property>
+                <property name="checkable">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="navMode">
+                <property name="text">
+                 <string>Navigation with Buttons</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="ModeStartButton">
+                <property name="text">
+                 <string>Start</string>
+                </property>
+                <property name="default">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
         <item row="0" column="1" rowspan="2">
          <widget class="QGroupBox" name="groupBox_7">
           <property name="title">
@@ -460,6 +751,41 @@ QDoubleSpinBox {
              </property>
              <property name="pixmap">
               <pixmap resource="resources.qrc">:/pics/img/BARK_logo_eng_int.png</pixmap>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <spacer name="verticalSpacer_11">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="optoforceLogo">
+             <property name="maximumSize">
+              <size>
+               <width>150</width>
+               <height>150</height>
+              </size>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap resource="resources.qrc">:/img/optoforce_logo.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>true</bool>
@@ -966,6 +1292,9 @@ QDoubleSpinBox {
                 <string>Position Control Settings</string>
                </property>
                <layout class="QFormLayout" name="formLayout_2">
+                <property name="fieldGrowthPolicy">
+                 <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                </property>
                 <item row="0" column="0">
                  <layout class="QFormLayout" name="formLayout">
                   <item row="0" column="0">
@@ -1031,8 +1360,8 @@ QDoubleSpinBox {
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="1">
-                 <spacer name="horizontalSpacer_3">
+                <item row="1" column="1">
+                 <spacer name="horizontalSpacer_4">
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
                   </property>
@@ -1044,8 +1373,8 @@ QDoubleSpinBox {
                   </property>
                  </spacer>
                 </item>
-                <item row="1" column="1">
-                 <spacer name="horizontalSpacer_4">
+                <item row="0" column="1">
+                 <spacer name="horizontalSpacer_3">
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
                   </property>
@@ -1061,170 +1390,6 @@ QDoubleSpinBox {
               </widget>
              </item>
             </layout>
-           </item>
-           <item row="2" column="1">
-            <spacer name="verticalSpacer_11">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="optoforceLogo">
-             <property name="maximumSize">
-              <size>
-               <width>150</width>
-               <height>150</height>
-              </size>
-             </property>
-             <property name="lineWidth">
-              <number>1</number>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="pixmap">
-              <pixmap resource="resources.qrc">:/img/optoforce_logo.png</pixmap>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QFrame" name="frame_3">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <widget class="QGroupBox" name="groupBox_3">
-             <property name="title">
-              <string>Path logging</string>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_14">
-              <item>
-               <widget class="QPushButton" name="startLogPath">
-                <property name="text">
-                 <string>Log Path</string>
-                </property>
-                <property name="default">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="stopLogging">
-                <property name="text">
-                 <string>Stop Logging</string>
-                </property>
-                <property name="autoDefault">
-                 <bool>false</bool>
-                </property>
-                <property name="default">
-                 <bool>true</bool>
-                </property>
-                <property name="flat">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="openLog">
-                <property name="text">
-                 <string>Open existing log</string>
-                </property>
-                <property name="default">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="verticalSpacer">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="groupBox_4">
-             <property name="title">
-              <string>Operating Modes</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_15">
-              <item>
-               <widget class="QRadioButton" name="goHomeMode">
-                <property name="text">
-                 <string>Go Home</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="centerMode">
-                <property name="text">
-                 <string>Stay Center</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="replayMode">
-                <property name="text">
-                 <string>Replay trajectory</string>
-                </property>
-                <property name="checkable">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="ModeStartButton">
-                <property name="text">
-                 <string>Start</string>
-                </property>
-                <property name="default">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="verticalSpacer_4">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </widget>
            </item>
           </layout>
          </widget>
@@ -1252,8 +1417,8 @@ QDoubleSpinBox {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>856</width>
-             <height>567</height>
+             <width>936</width>
+             <height>696</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -1916,7 +2081,7 @@ QDoubleSpinBox {
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="2" column="0" colspan="2">
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
            <widget class="QFrame" name="frame_4">
@@ -2170,7 +2335,7 @@ QDoubleSpinBox {
           </item>
          </layout>
         </item>
-        <item row="2" column="1">
+        <item row="2" column="2">
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -2183,6 +2348,52 @@ QDoubleSpinBox {
           </property>
          </spacer>
         </item>
+        <item row="0" column="2">
+         <widget class="QGroupBox" name="groupBox_8">
+          <property name="title">
+           <string>Control Buttons</string>
+          </property>
+          <widget class="QWidget" name="layoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>30</y>
+             <width>342</width>
+             <height>134</height>
+            </rect>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_20">
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_16"/>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_19"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="gridLayout_11">
+              <item row="0" column="1">
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
        </layout>
       </widget>
      </widget>
@@ -2194,7 +2405,7 @@ QDoubleSpinBox {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>898</width>
+     <width>978</width>
      <height>20</height>
     </rect>
    </property>

@@ -135,40 +135,6 @@ void controlForGui::FalconLoop()
         FK(encoderAng);                 ///  Forward kinematics
         break;
     }
-    case genTrajMode:
-    {
-
-        // In this mode the end-effector follows a
-        // previously generated path
-
-        setPid(*mKp,*mKd);              /// set PID values (Kd & Kp from GUI)
-        runIOLoop();                    ///  Exchange data with the falcon
-        read_encoder(encoderAng);       ///  Copy encoder values to "encoderAng"
-        getNextPoint(genTrajTh1, genTrajTh2, genTrajTh3); /// acces the next setpoint from the array that stores the path
-        FK(wayToGo,desiredOutput);       /// Forward kinematics , it's output is "desiredOutput"
-        addImpedance(desiredOutput,posWithImpedance); /// Add Positions from impedance model ,the the new setpoint position is stored in the second argument
-        IK(refPosAng,posWithImpedance,wayToGo);       /// Calculate the angles from the position of the updated setPoint value (here: posWithImpedance)
-        PID(wayToGo,encoderAng);        ///  PID controller refAng -> setpoint value, encoderAng -> current value
-        setLedGreen();                  ///  Set the LED on the falcon green
-        FK(encoderAng);                 /// Forward kinematics , it's output is the global "pos"
-
-        //?//
-        posx.push_back(returnpos()[0]);
-        posy.push_back(returnpos()[1]);
-        posz.push_back(returnpos()[2]);
-
-            // at the end of path switch back to homing mode
-        if (loopCount == trajectory.genCount)
-        {
-            endPos = homeAng;
-            isAtHome=true;
-            std::cout<< "Odaértem! " << std::endl;
-            loopCount = 0;
-            currentState=goHomeMode;  /// state swtich -> go to home position
-            firstRun=true;
-        }
-        break;
-    }
     case logPathMode:
     {
         // only communication occours , so the falcon does not crash
@@ -207,7 +173,24 @@ void controlForGui::FalconLoop()
         break;
     }
 
+
+    case navMode:
+    {
+        // In this mode the end-effector follows a
+        // previously logged path
+
+        setPid(*mKp,*mKd);              /// set PID values (Kd & Kp from GUI)
+        runIOLoop();                    ///  Exchange data with the falcon
+        read_encoder(encoderAng);       ///  Copy encoder values to "encoderAng"
+        addNavPos(desiredOutput);       ///  set Setpoint from gui data to desiredOutput
+        addImpedance(desiredOutput,posWithImpedance); /// Add Positions from impedance model ,the the new setpoint position is stored in the second argument
+        IK(refPosAng,posWithImpedance,wayToGo);       /// Calculate the angles from the position of the updated setPoint value (here: posWithImpedance)
+        PID(wayToGo,encoderAng);        ///  PID controller refAng -> setpoint value, encoderAng -> current value
+        setLedGreen();                  ///  Set the LED on the falcon green
+        FK(encoderAng);
+        break;
     }
+}
 
     encoderAngles=encoderAng;  //copy to global
     desAng=refAng;             //copy to global
@@ -781,6 +764,13 @@ gmtl::Vec3d controlForGui::addImpedance(gmtl::Vec3d& desiredPos, gmtl::Vec3d& po
     posWithImp[2] -= (*mPosZ)/1;
 
 }
+
+gmtl::Vec3d controlForGui::addNavPos(gmtl::Vec3d setPoint)
+{
+    setPoint = navPos;
+}
+
+
 /// LED control
 void controlForGui::setLedGreen()
 {

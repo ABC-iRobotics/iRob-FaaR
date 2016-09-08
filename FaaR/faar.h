@@ -61,6 +61,8 @@ public:
     int genCount = 0;
 
 
+    gmtl::Vec3d addPos;
+
 public slots:
     void onXchange(double);
     void onYchange(double);
@@ -140,6 +142,18 @@ private slots:
 
     void on_buttonFalconShowCoords_clicked();
 
+
+    void on_btnXdec_clicked();
+
+    void on_btnXinc_clicked();
+
+    void on_btnYinc_clicked();
+
+    void on_btnYdec_clicked();
+
+    void on_btnZinc_clicked();
+
+    void on_btnZdec_clicked();
 
 private:
 
