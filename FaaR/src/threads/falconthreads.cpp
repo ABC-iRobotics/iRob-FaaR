@@ -68,7 +68,7 @@ void controlLoop(void *arg)
             {
                 loopCountofLog++;
                 //std::cout<< " file megnyitva " << std::endl;
-                myLogFile << encoderAng[0] << " " << encoderAng[1] <<" " << encoderAng[2] << " "<< tcpPos[0]<< " "<<tcpPos[1]<<" "<<tcpPos[2] <<endl;
+                myLogFile << encoderAng[0] << " " << encoderAng[1] <<" " << encoderAng[2] <</* " "<< tcpPos[0]<< " "<<tcpPos[1]<<" "<<tcpPos[2] <<*/endl;
                 prevModeWasLog = true;
 
             }

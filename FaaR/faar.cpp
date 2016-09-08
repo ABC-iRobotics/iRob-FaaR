@@ -846,13 +846,6 @@ void MainWindow::on_genNew_clicked()
     //falconThreads->mControl.trajectory
 }
 
-void MainWindow::on_posMode_clicked()
-{
-    if(!ui->posMode->isCheckable())
-    {
-        showMessage.information(this, "", "First you need to make a trajectory by clicking on the 'Make trajectory' button.");
-    }
-}
 
 void MainWindow::on_replayMode_clicked()
 {

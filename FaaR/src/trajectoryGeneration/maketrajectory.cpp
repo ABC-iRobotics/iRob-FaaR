@@ -326,8 +326,6 @@ void MakeTrajectory::generateTrajectory()
         for (double t=0; t <= traject->Duration(); t+= dt)
         {
             szam = traject->Duration();
-            genOf << genCount << "    ";
-            genOf << t << "\t";
             Frame current_pose;
             Twist current_vel;
             Twist current_acc;
@@ -336,8 +334,6 @@ void MakeTrajectory::generateTrajectory()
             current_acc = traject->Acc(t);
             for (int i=0;i<3;++i)
                 for (int j=3;j<4;++j)
-                    genOf << current_pose(i,j) << /* <<"\t" << current_vel(i) << "\t" << current_acc(i) << */"\t";
-            genOf << "\n";
             // also velocities and accelerations are available !
             //traject->Vel(t);
             //traject->Acc(t);
@@ -355,8 +351,7 @@ void MakeTrajectory::generateTrajectory()
             pos[1] = current_pose.p.y();
             pos[2] = current_pose.p.z();
             IK(angles,pos);
-            genOf << angles.theta1[0] << " " << angles.theta1[1] <<" "
-                              << angles.theta1[2] << " "<< pos[0]<< " "<<pos[1]<<" "<<pos[2] <<endl;
+            genOf << angles.theta1[0] << " " << angles.theta1[1] <<" "<< angles.theta1[2] << " "<< pos[0]<< " "<<pos[1]<<" "<<pos[2] <<endl;
 
             //std::cout << "current pose x: " << current_acc.vel[2] << std::endl;
             genCount++;

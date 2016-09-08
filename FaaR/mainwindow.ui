@@ -179,7 +179,7 @@ QDoubleSpinBox {
        </size>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -1015,16 +1015,6 @@ QDoubleSpinBox {
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_15">
               <item>
-               <widget class="QPushButton" name="makeTrajectory">
-                <property name="text">
-                 <string>Make Trajectory</string>
-                </property>
-                <property name="default">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
                <widget class="QRadioButton" name="goHomeMode">
                 <property name="text">
                  <string>Go Home</string>
@@ -1035,16 +1025,6 @@ QDoubleSpinBox {
                <widget class="QRadioButton" name="centerMode">
                 <property name="text">
                  <string>Stay Center</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="posMode">
-                <property name="text">
-                 <string>Follow Trajectory</string>
-                </property>
-                <property name="checkable">
-                 <bool>false</bool>
                 </property>
                </widget>
               </item>
@@ -1117,8 +1097,8 @@ QDoubleSpinBox {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>801</width>
-             <height>541</height>
+             <width>542</width>
+             <height>478</height>
             </rect>
            </property>
            <property name="styleSheet">

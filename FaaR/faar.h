@@ -131,8 +131,6 @@ private slots:
 
     void on_genNew_clicked();
 
-    void on_posMode_clicked();
-
     void on_replayMode_clicked();
 
 
