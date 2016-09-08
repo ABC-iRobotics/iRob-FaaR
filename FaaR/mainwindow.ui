@@ -1039,13 +1039,6 @@ QDoubleSpinBox {
                </widget>
               </item>
               <item>
-               <widget class="QRadioButton" name="genTrajMode">
-                <property name="text">
-                 <string>Generated trajectory</string>
-                </property>
-               </widget>
-              </item>
-              <item>
                <widget class="QPushButton" name="ModeStartButton">
                 <property name="text">
                  <string>Start</string>
@@ -1097,8 +1090,8 @@ QDoubleSpinBox {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>542</width>
-             <height>478</height>
+             <width>801</width>
+             <height>541</height>
             </rect>
            </property>
            <property name="styleSheet">

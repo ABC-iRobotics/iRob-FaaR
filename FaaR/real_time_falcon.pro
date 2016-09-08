@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     qcustomplot.cpp \
     src/trajectoryGeneration/maketrajectory.cpp \
     faar.cpp \
-    pdcontrol.cpp
+    pdcontrol.cpp \
+    rtPlot.cpp
 
 
 HEADERS  +=\

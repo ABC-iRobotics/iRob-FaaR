@@ -74,7 +74,7 @@ void controlLoop(void *arg)
             }
             else
             {
-                myLogFile.open("log.dat" ,ios::trunc);
+                myLogFile.open("./Logs/log.dat" ,ios::trunc);
             }
         }
         if(prevModeWasLog==true && ctrl->currentState!=ctrl->logPathMode)
@@ -187,7 +187,7 @@ void FalconThreads::startFalcon()
     rt_task_create(&controlTask, "falconLoop", 0, 99, 0);
     rt_task_start(&controlTask, controlLoop, &mControl);
     std::cout << "Init done.\n" << std::endl;
-    myLogFile.open("log.dat" ,ios::trunc);
+myLogFile.open("./Logs/log.dat" ,ios::trunc);
     }
     else
     {
