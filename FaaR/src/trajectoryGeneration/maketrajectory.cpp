@@ -320,8 +320,21 @@ void MakeTrajectory::generateTrajectory()
 
         // use the trajectory
         double dt=0.001;
-        //std::ofstream genOf("./gentrajectory.dat");
-        genOf.open("./gentrajectory.dat", std::ios_base::trunc);
+        QDir dir(".");
+        QDir logPath("./Logs/generated");
+        std::cout << dir.currentPath().toStdString() << std::endl;
+        if(!logPath.exists())
+        {
+            dir.mkpath("./Logs/generated");
+        }
+        time = QDateTime::currentDateTime().toString("yyyy-MM-dd-hh:mm:ss"); // time for filename
+        QFile myFile("./Logs/generated/" + time + ".dat"); // create log file with current date name
+        myFile.open(QFile::WriteOnly | QFile::ReadOnly | QFile::Text); // open log file
+        if(!myFile.isOpen())
+        {
+            std::cout << "File is not opened" << std::endl;
+        }
+        QTextStream out(&myFile); // text object is created to write data to the files
         genCount = 0;
         for (double t=0; t <= traject->Duration(); t+= dt)
         {
@@ -351,12 +364,11 @@ void MakeTrajectory::generateTrajectory()
             pos[1] = current_pose.p.y();
             pos[2] = current_pose.p.z();
             IK(angles,pos);
-            genOf << angles.theta1[0] << " " << angles.theta1[1] <<" "<< angles.theta1[2] << " "<< pos[0]<< " "<<pos[1]<<" "<<pos[2] <<endl;
-
-            //std::cout << "current pose x: " << current_acc.vel[2] << std::endl;
+            out << angles.theta1[0] << " " << angles.theta1[1] <<" "<< angles.theta1[2] <<endl;
             genCount++;
         }
-        genOf.close();
+        myFile.flush();
+        myFile.close(); // close opened log file.
 
 
 
