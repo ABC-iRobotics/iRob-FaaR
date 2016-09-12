@@ -134,7 +134,7 @@ public:
    falconData args;
 
 
-   gmtl::Vec3d addNavPos(gmtl::Vec3d setPointPos);
+   gmtl::Vec3d addNavPos(gmtl::Vec3d &setPointPos);
 private:
     /// Accessing falcon communication :
     boost::shared_ptr<FalconFirmware> f;

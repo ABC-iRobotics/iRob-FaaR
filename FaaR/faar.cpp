@@ -347,13 +347,16 @@ void MainWindow::on_replayMode_clicked()
 
 void MainWindow::on_FalconFeedback_clicked()
 {
+
     if (falconThreads->mControl.args.isItConnected)
     {
         ui->labelFalconConnected->setText("Falcon found");
+
     }
     if (falconThreads->mControl.args.isItFound && falconThreads->mControl.args.isItConnected)
     {
         ui->labelFalconConnected->setText("Falcon connected");
+
 
     }
 

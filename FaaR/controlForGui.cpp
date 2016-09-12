@@ -633,6 +633,10 @@ void controlForGui::init()
         args.isItConnected=false;
         return;
     }
+    else
+    {
+        args.isItConnected = true;
+    }
     count = 0;
     std::cout << "Falcons found: " << (int)num_falcons << std::endl;
     args.isItFound=true;
@@ -646,7 +650,7 @@ void controlForGui::init()
         std::cout << "Opening falcon " << z + 1  << std::endl;
         if(!dev.open(z))
         {
-            std::cout << "Cannot open falcon - Error: " << std::endl; // << dev.getErrorCode() << std::endl;
+            std::cout << "Cannot open falcon - Error: " << std::endl << dev.getErrorCode() << std::endl;
             args.isItConnected=false;
             return;
         }
@@ -661,13 +665,13 @@ void controlForGui::init()
                 if(!dev.getFalconFirmware()->loadFirmware(true, NOVINT_FALCON_NVENT_FIRMWARE_SIZE, const_cast<uint8_t*>(NOVINT_FALCON_NVENT_FIRMWARE)))
                 {
                     std::cout << "Could not load firmware" << std::endl;
-                    args.isFirmWareLoaded=false;
+                    //args.isFirmWareLoaded=false;
                     return;
                 }
                 else
                 {
                     std::cout <<"Firmware loaded" << std::endl;
-                    args.isFirmWareLoaded=true;
+                                     args.isFirmWareLoaded=true;
                     break;
                 }
             }
@@ -677,6 +681,8 @@ void controlForGui::init()
                 return;
             }
         }
+
+        args.isFirmWareLoaded = true;
 
 
 
@@ -765,7 +771,7 @@ gmtl::Vec3d controlForGui::addImpedance(gmtl::Vec3d& desiredPos, gmtl::Vec3d& po
 
 }
 
-gmtl::Vec3d controlForGui::addNavPos(gmtl::Vec3d setPoint)
+gmtl::Vec3d controlForGui::addNavPos(gmtl::Vec3d& setPoint)
 {
     setPoint = navPos;
 }

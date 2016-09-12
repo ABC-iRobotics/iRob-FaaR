@@ -179,7 +179,7 @@ QDoubleSpinBox {
        </size>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -1466,8 +1466,8 @@ QDoubleSpinBox {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>936</width>
-             <height>696</height>
+             <width>542</width>
+             <height>478</height>
             </rect>
            </property>
            <property name="styleSheet">
