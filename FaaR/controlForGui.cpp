@@ -53,6 +53,25 @@ void controlForGui::genTrajectoryPath()
 
 }
 
+void controlForGui::isPosOutOfWorkSpace(gmtl::Vec3d pos, gmtl::Vec3d& correctPos)
+{
+    Angle placeholderAng;
+    gmtl::Vec3d thetas;
+
+        IK(placeholderAng,pos,thetas);
+
+        if (thetas[0]!=thetas[0] || thetas[1]!=thetas[1] || thetas[2]!=thetas[2])
+        {
+            correctPos = prev_pos;
+        }
+        else
+        {
+            prev_pos=pos;
+            correctPos=pos;
+         }
+
+}
+
 /// Trajectory generation from points
 void controlForGui::generateTrajectory()  // Something is wrong here -gotta look into it later
 {
@@ -89,7 +108,7 @@ void controlForGui::FalconLoop()
     gmtl::Vec3d encoderAng;  //  to store encoder values
     gmtl::Vec3d refAng;      //  to store the setpoint encoder values
     Angle refPosAng;         //  to store IK() function output
-    gmtl::Vec3d desiredOutput, posWithImpedance;
+    gmtl::Vec3d desiredOutput, posWithImpedance ,posLimited;
 
     switch (currentState)
     {
@@ -129,7 +148,8 @@ void controlForGui::FalconLoop()
         runIOLoop();                    ///  Exchange data with the falcon
         read_encoder(encoderAng);       ///  Copy encoder values to "encoderAng"
         addImpedance(endPos,posWithImpedance);   /// Add Positions from impedance model ,the the new setpoint position is stored in the second argument
-        IK(refPosAng,posWithImpedance,refAng);   /// Calculate the angles from the position of the updated "pos" value
+        isPosOutOfWorkSpace(posWithImpedance,posLimited);  /// check if out of bounds
+        IK(refPosAng,posLimited,refAng);   /// Calculate the angles from the position of the updated "pos" value
         PID(refAng,encoderAng);         ///  PID controller refAng -> setpoint value, encoderAng -> current value
         setLedGreen();                  ///  Set the LED on the falcon green
         FK(encoderAng);                 ///  Forward kinematics
@@ -155,7 +175,8 @@ void controlForGui::FalconLoop()
         getNextPoint(logTh0, logTh1, logTh2); /// acces the next setpoint from the array that stores the path
         FK(wayToGo,desiredOutput);       /// Forward kinematics , it's output is "desiredOutput"
         addImpedance(desiredOutput,posWithImpedance); /// Add Positions from impedance model ,the the new setpoint position is stored in the second argument
-        IK(refPosAng,posWithImpedance,wayToGo);       /// Calculate the angles from the position of the updated setPoint value (here: posWithImpedance)
+        isPosOutOfWorkSpace(posWithImpedance,posLimited);  /// check if out of bounds
+        IK(refPosAng,posLimited,wayToGo);       /// Calculate the angles from the position of the updated setPoint value (here: posWithImpedance)
         PID(wayToGo,encoderAng);        ///  PID controller refAng -> setpoint value, encoderAng -> current value
         setLedGreen();                  ///  Set the LED on the falcon green
         FK(encoderAng);
@@ -184,7 +205,8 @@ void controlForGui::FalconLoop()
         read_encoder(encoderAng);       ///  Copy encoder values to "encoderAng"
         addNavPos(desiredOutput);       ///  set Setpoint from gui data to desiredOutput
         addImpedance(desiredOutput,posWithImpedance); /// Add Positions from impedance model ,the the new setpoint position is stored in the second argument
-        IK(refPosAng,posWithImpedance,wayToGo);       /// Calculate the angles from the position of the updated setPoint value (here: posWithImpedance)
+        isPosOutOfWorkSpace(posWithImpedance,posLimited);  /// check if out of bounds
+        IK(refPosAng,posLimited,wayToGo);       /// Calculate the angles from the position of the updated setPoint value (here: posWithImpedance)
         PID(wayToGo,encoderAng);        ///  PID controller refAng -> setpoint value, encoderAng -> current value
         setLedGreen();                  ///  Set the LED on the falcon green
         FK(encoderAng);
@@ -725,6 +747,7 @@ pos[0] = 0;
 pos[1] = 0;
 pos[2] = 0.12;
 
+prev_pos=pos;
 
 }
 void controlForGui::set_vectorzero(gmtl::Vec3d vect)

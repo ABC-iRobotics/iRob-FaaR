@@ -59,7 +59,7 @@ public:
     void trajectoryPath();
     void getNextPoint(std::vector<double> ang1, std::vector<double> ang2, std::vector<double> ang3);
     void genTrajectoryPath();
-
+    void isPosOutOfWorkSpace(gmtl::Vec3d pos, gmtl::Vec3d &correctPos);
 
     /// Low - pass filter for the D member
     void avgOfArray();
@@ -151,6 +151,7 @@ private:
 
     Angle angles;
     gmtl::Vec3d pos;
+    gmtl::Vec3d prev_pos;
     gmtl::Vec3d mPVect;
     gmtl::Vec3d mDVect;
     gmtl::Vec3d Kdfilter;
