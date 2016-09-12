@@ -61,6 +61,8 @@ public:
     double genZ;
     int genCount = 0;
 
+    double stepSize = 0.0001;
+
 
     gmtl::Vec3d addPos;
 
@@ -155,6 +157,10 @@ private slots:
     void on_btnZinc_clicked();
 
     void on_btnZdec_clicked();
+
+    void on_lineEdit_textEdited(const QString &arg1);
+
+    void on_navMode_clicked();
 
 private:
 

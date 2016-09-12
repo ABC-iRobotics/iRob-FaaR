@@ -414,7 +414,7 @@ if (!posShowPauseIsOn)
 
 void MainWindow::on_btnXdec_clicked()
 {
-    addPos[0]-=0.0001;
+    addPos[0]-=stepSize;
     falconThreads->mControl.navPos[0]=addPos[0];
     QString navX = QString::number(addPos[0]);
     QString navY = QString::number(addPos[1]);
@@ -425,7 +425,7 @@ void MainWindow::on_btnXdec_clicked()
 
 void MainWindow::on_btnXinc_clicked()
 {
-    addPos[0]+=0.0001;
+    addPos[0]+=stepSize;
     falconThreads->mControl.navPos[0]=addPos[0];
     QString navX = QString::number(addPos[0]);
     QString navY = QString::number(addPos[1]);
@@ -436,7 +436,7 @@ void MainWindow::on_btnXinc_clicked()
 
 void MainWindow::on_btnYinc_clicked()
 {
-    addPos[1]+=0.0001;
+    addPos[1]+=stepSize;
     falconThreads->mControl.navPos[1]=addPos[1];
     QString navX = QString::number(addPos[0]);
     QString navY = QString::number(addPos[1]);
@@ -447,7 +447,7 @@ void MainWindow::on_btnYinc_clicked()
 
 void MainWindow::on_btnYdec_clicked()
 {
-    addPos[1]-=0.0001;
+    addPos[1]-=stepSize;
     falconThreads->mControl.navPos[1]=addPos[1];
     QString navX = QString::number(addPos[0]);
     QString navY = QString::number(addPos[1]);
@@ -458,7 +458,7 @@ void MainWindow::on_btnYdec_clicked()
 
 void MainWindow::on_btnZinc_clicked()
 {
-    addPos[2]+=0.0001;
+    addPos[2]+=stepSize;
     falconThreads->mControl.navPos[2]=addPos[2];
     QString navX = QString::number(addPos[0]);
     QString navY = QString::number(addPos[1]);
@@ -469,11 +469,28 @@ void MainWindow::on_btnZinc_clicked()
 
 void MainWindow::on_btnZdec_clicked()
 {
-    addPos[2]-=0.0001;
+    addPos[2]-=stepSize;
     falconThreads->mControl.navPos[2]=addPos[2];
     QString navX = QString::number(addPos[0]);
     QString navY = QString::number(addPos[1]);
     QString navZ = QString::number(addPos[2]);
     QString full = QString("%1 // %2 // %3").arg(navX).arg(navY).arg(navZ);
     ui->labelNav->setText(full);
+}
+
+void MainWindow::on_lineEdit_textEdited(const QString &arg1)
+{
+    ui->btnXinc->setAutoRepeatInterval(arg1.toInt());
+    ui->btnXdec->setAutoRepeatInterval(arg1.toInt());
+    ui->btnYinc->setAutoRepeatInterval(arg1.toInt());
+    ui->btnYdec->setAutoRepeatInterval(arg1.toInt());
+    ui->btnZinc->setAutoRepeatInterval(arg1.toInt());
+    ui->btnZdec->setAutoRepeatInterval(arg1.toInt());
+}
+
+void MainWindow::on_navMode_clicked()
+{
+    falconThreads->mControl.navPos[0] = 0;
+    falconThreads->mControl.navPos[1] = 0;
+    falconThreads->mControl.navPos[2] = 0.12;
 }
