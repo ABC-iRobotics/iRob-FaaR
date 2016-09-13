@@ -105,7 +105,7 @@ void MainWindow::on_resetPosAndVel_clicked()
 }
 
 
-void MainWindow::on_startThreads_clicked()
+/*void MainWindow::on_startThreads_clicked()
 {
     threadsStarted++;
 
@@ -121,7 +121,7 @@ void MainWindow::on_startThreads_clicked()
          ui->ThreadFeedback->setText("ON");
         ui->ThreadFeedback->setStyleSheet("background-color: green");
         ui->labelThreadFeedback->setText("Thread running");
-        labelUpdateThread->start();
+
     }
 }
 void MainWindow::on_stopThreads_clicked()
@@ -131,7 +131,7 @@ void MainWindow::on_stopThreads_clicked()
    // ui->writeOut->append("Threads stopped.");
     ui->ThreadFeedback->setText("OFF");
     ui->ThreadFeedback->setStyleSheet("background-color: red");
-}
+}*/
 void MainWindow::on_startSensor_clicked()
 {
     sensorStarted++;
@@ -165,6 +165,7 @@ void MainWindow::on_startFalcon_clicked()
     else
     {
         falconThreads->startFalcon();
+        labelUpdateThread->start();
         //ui->writeOut->append("Falcon running.");
         on_FalconFeedback_clicked();
     }
@@ -247,6 +248,10 @@ void MainWindow::on_ModeStartButton_clicked()
     else if(ui->navMode->isChecked())
     {
         falconThreads->mControl.currentState=falconThreads->mControl.navMode;
+        addPos[0] = 0;
+        addPos[1] = 0;
+        addPos[2] = 0.12;
+
         ui->labelOperationMode->setText("Navigaton mode");
     }
 

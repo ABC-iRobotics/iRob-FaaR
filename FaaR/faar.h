@@ -82,8 +82,8 @@ public slots:
 
 private slots:
 
-    void on_startThreads_clicked();
-    void on_stopThreads_clicked();
+    /*void on_startThreads_clicked();
+    void on_stopThreads_clicked();*/
     void on_startSensor_clicked();
     void on_stopProgram_clicked();
     void on_startFalcon_clicked();

@@ -687,7 +687,7 @@ void controlForGui::init()
                 if(!dev.getFalconFirmware()->loadFirmware(true, NOVINT_FALCON_NVENT_FIRMWARE_SIZE, const_cast<uint8_t*>(NOVINT_FALCON_NVENT_FIRMWARE)))
                 {
                     std::cout << "Could not load firmware" << std::endl;
-                    //args.isFirmWareLoaded=false;
+                    args.isFirmWareLoaded=false;
                     return;
                 }
                 else
@@ -704,7 +704,8 @@ void controlForGui::init()
             }
         }
 
-        args.isFirmWareLoaded = true;
+        if(dev.isFirmwareLoaded())
+        {        args.isFirmWareLoaded = true; }
 
 
 

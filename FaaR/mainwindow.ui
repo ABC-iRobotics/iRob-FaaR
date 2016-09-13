@@ -204,19 +204,6 @@ QDoubleSpinBox {
            <item>
             <layout class="QGridLayout" name="controlButtonsAll">
              <item row="3" column="0">
-              <widget class="QPushButton" name="stopThreads">
-               <property name="text">
-                <string>Stop threads</string>
-               </property>
-               <property name="autoDefault">
-                <bool>true</bool>
-               </property>
-               <property name="default">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
               <widget class="QPushButton" name="stopProgram">
                <property name="text">
                 <string>Stop sensor</string>
@@ -229,7 +216,7 @@ QDoubleSpinBox {
                </property>
               </widget>
              </item>
-             <item row="3" column="2">
+             <item row="3" column="1">
               <widget class="QPushButton" name="stopFalcon">
                <property name="text">
                 <string>Stop Falcon</string>
@@ -242,7 +229,7 @@ QDoubleSpinBox {
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
+             <item row="1" column="0">
               <widget class="QPushButton" name="SensoFeedback">
                <property name="text">
                 <string/>
@@ -258,7 +245,7 @@ QDoubleSpinBox {
                </property>
               </widget>
              </item>
-             <item row="1" column="2">
+             <item row="1" column="1">
               <widget class="QPushButton" name="FalconFeedback">
                <property name="text">
                 <string/>
@@ -274,7 +261,7 @@ QDoubleSpinBox {
                </property>
               </widget>
              </item>
-             <item row="2" column="2">
+             <item row="2" column="1">
               <widget class="QPushButton" name="startFalcon">
                <property name="text">
                 <string>Start Falcon</string>
@@ -287,30 +274,7 @@ QDoubleSpinBox {
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
-              <widget class="QPushButton" name="ThreadFeedback">
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
              <item row="2" column="0">
-              <widget class="QPushButton" name="startThreads">
-               <property name="text">
-                <string>Start threads</string>
-               </property>
-               <property name="checkable">
-                <bool>false</bool>
-               </property>
-               <property name="autoDefault">
-                <bool>true</bool>
-               </property>
-               <property name="default">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
               <widget class="QPushButton" name="startSensor">
                <property name="text">
                 <string>Start sensor</string>
@@ -467,6 +431,12 @@ QDoubleSpinBox {
                   <width>80</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="text">
+                 <string>1</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -1330,7 +1300,7 @@ QDoubleSpinBox {
                      </size>
                     </property>
                     <property name="text">
-                     <string>Start show</string>
+                     <string>Pause</string>
                     </property>
                    </widget>
                   </item>
@@ -1483,8 +1453,8 @@ QDoubleSpinBox {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>542</width>
-             <height>478</height>
+             <width>936</width>
+             <height>696</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -2502,7 +2472,6 @@ QDoubleSpinBox {
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>stopThreads</tabstop>
   <tabstop>stopProgram</tabstop>
   <tabstop>stopFalcon</tabstop>
   <tabstop>newKp</tabstop>
