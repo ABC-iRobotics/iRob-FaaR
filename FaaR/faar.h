@@ -61,7 +61,7 @@ public:
     double genZ;
     int genCount = 0;
 
-    double stepSize = 0.0001;
+    double stepSize = 0.00001;
 
 
     gmtl::Vec3d addPos;
